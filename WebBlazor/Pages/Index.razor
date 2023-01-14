@@ -1,6 +1,9 @@
 ﻿@page "/"
+@using Application.ModelDto;
+@using Application.Service.Queries;
 @using Domain;
 @inject IRepository<Employee> _employee;
+@inject IMediator _mediator
 
 <PageTitle>Index</PageTitle>
 
@@ -36,17 +39,19 @@ else {
 </table>
 }
 
-    @code{
-        List<Employee> employees = new();
+@code{
+    List<EmployeeDto> employees = new List<EmployeeDto>();
 
     protected override async Task OnInitializedAsync()
     {
         base.OnInitialized();
-        var empl = _employee.GetAll();
-        foreach(var i in empl)
-        {
-            employees.Add(i);
-        }
+        //var empl 
+        employees  = await _mediator.Send(new GetEmployeesQuery());
+        //var empl = _employee.GetAll();
+        //foreach(var i in empl)
+        //{
+        //    employees.Add(i);
+        //}
     }
 
 }
