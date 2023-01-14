@@ -1,0 +1,52 @@
+﻿@page "/"
+@using Domain;
+@inject IRepository<Employee> _employee;
+
+<PageTitle>Index</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+@if (employees is null)
+{
+    <div class="h4">Loading...</div>
+}
+else {
+<table class="table">
+    <tr>
+        <th><a class="nav-link">Imię i Nazwisko</a></th>
+        <th><a class="nav-link">Prawo wyk. zawodu</a></th>
+        <th><a class="nav-link">Telefon</a></th>
+    </tr>
+
+
+        @foreach (var e in employees)
+    {
+        <tr>
+            <td>@e.Name @e.Surname</td>
+            <td>@e.LicenseNumber</td>
+            <td>@e.PhoneNumber</td>
+
+
+        </tr>
+    }
+</table>
+}
+
+    @code{
+        List<Employee> employees = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitialized();
+        var empl = _employee.GetAll();
+        foreach(var i in empl)
+        {
+            employees.Add(i);
+        }
+    }
+
+}
