@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
+using WebBlazor.AutoMapperWebBlazor;
+using WebBlazor.ServiceBlazor;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +24,8 @@ builder.Services.AddDbContext<AppDbContext>(option =>
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 builder.Services.AddMediatR(typeof(MediatorConfiguration).GetTypeInfo().Assembly);
-builder.Services.AddSingleton(AutoMapperConfiguration.Initialize());
+builder.Services.AddSingleton(AutoMapperConfigurationWebBlazor.Initialize());
+
 
 var app = builder.Build();
 

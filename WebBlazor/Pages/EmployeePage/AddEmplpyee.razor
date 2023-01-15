@@ -1,0 +1,55 @@
+﻿@page "/addEmployee"
+@using Application.ModelDto;
+@using Application.Service.Command;
+@using Domain;
+@inject IMediator _mediator
+@inject IMapper _mapper
+
+
+
+<h3>Dodaj nowego pracownika</h3>
+
+
+    <EditForm Model="@employee" OnValidSubmit="@InsertEmployee">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <td>Imię: </td>
+        <InputText id="name" @bind-Value="employee.Name" required />
+        <br />
+        <td>Nazwisko: </td>
+        <InputText id="surname" @bind-Value="employee.Surname" required />
+        <br />
+        <td>Adres e-mail: </td>
+        <InputText id="addressemail" @bind-Value="employee.AddressEmail" required />
+        <br />
+        <td>Telefon: </td>
+        <InputText id="phonenumber" @bind-Value="employee.PhoneNumber" required />
+        <br />
+        <td>Prawo wyk. zawodu: </td>
+        <InputText id="licensenumber" @bind-Value="employee.LicenseNumber" required />
+        <br />
+        <td>Hasło: </td>
+        <InputText id="password" @bind-Value="employee.Password" required />
+        <br />
+        <br />
+        <button type="submit">Submit</button>
+    </EditForm>
+
+
+
+
+@code {
+    AddEmployeeModel employee = new();
+
+    AddEmployeeModel empl = new();
+
+    private async Task InsertEmployee()
+    {
+        empl = employee;
+        var result = _mapper.Map<CreateEmployeeCommand>(employee);
+        await _mediator.Send(result);
+            }
+
+}
+

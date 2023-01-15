@@ -33,8 +33,11 @@ namespace Application.Service.Queries
 
             foreach (var i in employees)
             {
-                var employee = _mapper.Map<EmployeeDto>(i);
-                result.Add(employee);
+                if (i.Active == true)
+                {
+                    var employee = _mapper.Map<EmployeeDto>(i);
+                    result.Add(employee);
+                }
             }
 
             return result;

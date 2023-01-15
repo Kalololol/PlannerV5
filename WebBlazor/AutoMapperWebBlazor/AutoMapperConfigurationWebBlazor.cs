@@ -2,23 +2,23 @@
 using Application.Service.Command;
 using AutoMapper;
 using Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using WebBlazor.ModelWebBlazor;
 
-namespace Application.Mapping
+namespace WebBlazor.AutoMapperWebBlazor
 {
-    public class AutoMapperConfiguration : Profile
+    public class AutoMapperConfigurationWebBlazor
     {
         public static IMapper Initialize()
            => new MapperConfiguration(cfg =>
            {
                cfg.CreateMap<Employee, EmployeeDto>().ReverseMap();
                cfg.CreateMap<EmployeeDto, CreateEmployeeCommand>().ReverseMap();
+               cfg.CreateMap<AddEmployeeModel, CreateEmployeeCommand>().ReverseMap();
+
+               
 
                cfg.CreateMap<Request, RequestDto>().ReverseMap();
+
 
            }).CreateMapper();
     }

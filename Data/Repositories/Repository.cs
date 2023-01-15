@@ -31,6 +31,7 @@ namespace Data.Repositories
         public void Add(TEntity entity)
         {
             entities.Add(entity);
+            SaveChanges();
         }
 
         public IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
@@ -42,10 +43,14 @@ namespace Data.Repositories
         {
             entities.Attach(entity);
             _context.Entry(entity).State = EntityState.Modified;
+            SaveChanges();
+
         }
         public void Delete(TEntity entity)
         {
             entities.Remove(entity);
+            SaveChanges();
+
         }
         public void SaveChanges()
         {
