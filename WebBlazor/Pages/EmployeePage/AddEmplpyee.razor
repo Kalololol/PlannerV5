@@ -40,16 +40,14 @@
 
 
 @code {
-    AddEmployeeModel employee = new();
+    EmployeeModel employee = new();
 
-    AddEmployeeModel empl = new();
 
     private async Task InsertEmployee()
     {
-        empl = employee;
         var result = _mapper.Map<CreateEmployeeCommand>(employee);
         await _mediator.Send(result);
-            }
+    }
 
 }
 

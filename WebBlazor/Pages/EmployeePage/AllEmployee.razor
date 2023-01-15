@@ -1,0 +1,48 @@
+﻿@page "/allEmployees"
+@using Application.Service.Queries;
+@inject IMapper _mapper
+@inject IMediator _mediator
+
+<p><h3>Wszyscy pracownicy</h3> <a href="@("/employeecreate")">Dodaj pracownika</a></p>
+<p>
+
+    @if (employees == null)
+    {
+        <div>
+            <p>Ładowanie.... </p>
+        </div>
+    }
+    else
+    {
+        <table class="table">
+            <tr>
+                <th><a class="nav-link">Imię i Nazwisko</a></th>
+                <th><a class="nav-link">Prawo wyk. zawodu</a></th>
+                <th><a class="nav-link">Telefon</a></th>
+            </tr>
+            @foreach (var e in employees)
+            {
+                <tr>
+                    <td>@e.Name @e.Surname</td>
+                    <td>@e.LicenseNumber</td>
+                    <td>@e.PhoneNumber</td>
+                    <button class="btn btn-primiary"><a href="@($"/detailsEmployee/{e.Id}")">Szczegóły</a></button>
+                    <button class="btn btn-primiary"><a href="@($"/editEmployee/{e.Id}")">Edycja</a></button>
+                </tr>
+            }
+            <br />
+        </table>
+    }
+</p>
+
+@code {
+    List<EmployeeModel> employees = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        var input = await _mediator.Send(new GetEmployeesQuery());
+        employees = _mapper.Map<List<EmployeeModel>>(input);
+    }
+
+}

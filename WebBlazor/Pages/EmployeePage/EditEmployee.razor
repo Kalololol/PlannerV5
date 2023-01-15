@@ -1,0 +1,56 @@
+﻿@page "/editEmployee"
+@page "/editEmployee/{id:int}"
+
+
+@using Application.Service.Command;
+@using Application.Service.Queries;
+@inject IMediator _mediator
+@inject IMapper _mapper 
+
+<h3>EditEmployee</h3>
+
+<EditForm Model="@employee" OnValidSubmit="@OnInitializedAsync">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <td>Imię: </td>
+    <InputText id="name" @bind-Value="employee.Name" required />
+    <br />
+    <td>Nazwisko: </td>
+    <InputText id="surname" @bind-Value="employee.Surname" required />
+    <br />
+    <td>Adres e-mail: </td>
+    <InputText id="addressemail" @bind-Value="employee.AddressEmail" required />
+    <br />
+    <td>Telefon: </td>
+    <InputText id="phonenumber" @bind-Value="employee.PhoneNumber" required />
+    <br />
+    <td>Prawo wyk. zawodu: </td>
+    <InputText id="licensenumber" @bind-Value="employee.LicenseNumber" required />
+    <br />
+    <td>Hasło: </td>
+    <InputText id="password" @bind-Value="employee.Password" required />
+    <br />
+    <br />
+    <button type="submit" @onclick="EmployeeEdit">Zatwierdź zmiany</button>
+</EditForm>
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    EmployeeModel employee = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitialized();
+        var empl = await _mediator.Send(new GetEmployeeByIdQuery(Id));
+        employee = _mapper.Map<EmployeeModel>(empl);
+    }
+
+    private async Task EmployeeEdit()
+    {
+        await _mediator.Send(_mapper.Map<EditEmployeeCommand>(employee));
+    }
+}

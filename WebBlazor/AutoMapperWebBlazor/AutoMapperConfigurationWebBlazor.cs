@@ -12,10 +12,12 @@ namespace WebBlazor.AutoMapperWebBlazor
            => new MapperConfiguration(cfg =>
            {
                cfg.CreateMap<Employee, EmployeeDto>().ReverseMap();
-               cfg.CreateMap<EmployeeDto, CreateEmployeeCommand>().ReverseMap();
-               cfg.CreateMap<AddEmployeeModel, CreateEmployeeCommand>().ReverseMap();
+               cfg.CreateMap<EmployeeModel, CreateEmployeeCommand>().ReverseMap();
+               cfg.CreateMap<CreateEmployeeCommand, EmployeeDto>().ReverseMap();
+               cfg.CreateMap<EmployeeDto, EmployeeModel>().ReverseMap();
+               cfg.CreateMap<EmployeeModel, EditEmployeeCommand>().ReverseMap();
 
-               
+
 
                cfg.CreateMap<Request, RequestDto>().ReverseMap();
 

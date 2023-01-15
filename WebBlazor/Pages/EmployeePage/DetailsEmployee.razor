@@ -1,0 +1,46 @@
+﻿@page "/detailsEmployee"
+@page "/detailsEmployee/{id:int}"
+
+@using Application.Service.Queries;
+@inject IMediator _mediator
+@inject IMapper _mapper
+
+<PageTitle>SPG - szczegóły pracownika</PageTitle>
+
+<h3>Pracownik @employee.Name @employee.Surname</h3>
+
+ <table class="table">
+        <tr>
+            <th><a class="nav-link">Imię i Nazwisko</a></th>
+            <th><a class="nav-link">Prawo wyk. zawodu</a></th>
+            <th><a class="nav-link">Telefon</a></th>
+            <th><a class="nav-link">Hasło</a></th>
+
+        </tr>
+        <tr>
+            <td>@employee.Name @employee.Surname</td>
+            <td>@employee.LicenseNumber</td>
+            <td>@employee.PhoneNumber</td>
+            <td>@employee.Password</td>
+
+
+            <button class="btn btn-primiary"><a href="@($"/editEmployee/{employee.Id}")">Edycja</a></button>
+
+        </tr>
+    <br />
+    <a href="@($"/allEmployees")">Cofnij</a>
+       </table>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    EmployeeModel employee = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        var empl =  await _mediator.Send(new GetEmployeeByIdQuery(Id));
+        employee = _mapper.Map<EmployeeModel>(empl);
+    }
+}
