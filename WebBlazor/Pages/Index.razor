@@ -2,8 +2,11 @@
 @using Application.ModelDto;
 @using Application.Service.Queries;
 @using Domain;
+@using Syncfusion.Blazor.Grids
 @inject IRepository<Employee> _employee;
 @inject IMediator _mediator
+@inject IMapper _mapper
+@inject IEmployeeService _employeeService
 
 <PageTitle>Index</PageTitle>
 
@@ -40,18 +43,14 @@ else {
 }
 
 @code{
-    List<EmployeeDto> employees = new ();
+    List<EmployeeModel> employees = new List<EmployeeModel> ();
 
     protected override async Task OnInitializedAsync()
     {
         base.OnInitialized();
-        //var empl 
-        employees  = await _mediator.Send(new GetEmployeesQuery());
-        //var empl = _employee.GetAll();
-        //foreach(var i in empl)
-        //{
-        //    employees.Add(i);
-        //}
+
+        employees = await _employeeService.GetEmployees();
+                
     }
 
 }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Syncfusion.Blazor;
 using System.Reflection;
 using WebBlazor.AutoMapperWebBlazor;
 using WebBlazor.ServiceBlazor;
@@ -26,6 +27,14 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddMediatR(typeof(MediatorConfiguration).GetTypeInfo().Assembly);
 builder.Services.AddSingleton(AutoMapperConfigurationWebBlazor.Initialize());
 
+builder.Services.AddHttpClient();
+//builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7205/") });
+
+builder.Services.AddHttpClient<IEmployeeService, EmployeeService>
+    (client =>
+    {
+        client.BaseAddress = new Uri(("https://localhost:7205/"));
+    });
 
 var app = builder.Build();
 

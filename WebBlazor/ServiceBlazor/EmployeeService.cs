@@ -2,40 +2,41 @@
 using Application.Service.Command;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Net.Http.Json;
+using WebBlazor.ModelWebBlazor;
 
 namespace WebBlazor.ServiceBlazor
 {
     public class EmployeeService : IEmployeeService
     {
-        private readonly IMapper _mapper;
-        private readonly IMediator _mediator;
+        private readonly HttpClient httpClient;
 
-        public EmployeeService(IMapper mapper, IMediator mediator)
+        public EmployeeService(HttpClient httpClient)
         {
-            _mapper = mapper;
-            _mediator = mediator;
+            this.httpClient = httpClient;
         }
 
-        public async Task<EmployeeDto> CreateEmployee(EmployeeDto employee)
+        public async Task<List<EmployeeModel>> GetEmployees()
         {
-                await _mediator.Send(_mapper.Map<CreateEmployeeCommand>(employee));
-            return( employee );
+            return await httpClient.GetFromJsonAsync<List<EmployeeModel>>("api/employee/allEmployees");
         }
 
-        public Task<EmployeeDto> EditEmployee(EmployeeDto employee)
+        public Task<EmployeeModel> GetEmployeeById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<EmployeeDto>> GetAllEmployees()
+        public Task<EmployeeModel> CreateEmployee(EmployeeModel employee)
         {
             throw new NotImplementedException();
         }
 
-        public Task<EmployeeDto> GetEmployeeById(int id)
+        public Task<EmployeeModel> EditEmployee(EmployeeModel employee)
         {
             throw new NotImplementedException();
         }
+
+        
     }
 }

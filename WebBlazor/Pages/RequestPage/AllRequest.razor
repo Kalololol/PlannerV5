@@ -1,0 +1,44 @@
+﻿@page "/allRequest"
+@using Application.Service.Queries;
+@inject IMediator _mediator
+@inject IMapper _mapper
+
+
+<h3>EditRequest</h3>
+
+<h3>Prośby grafikowe</h3>
+<p>
+    <table class="table">
+        <tr>
+            <th><a class="nav-link">Dzień niedostępności</a></th>
+            <th><a class="nav-link">Zmiana</a></th>
+        </tr>
+
+
+        @foreach (var r in requests)
+        {
+            <tr>
+                <td>@r.DayIndisposition</td>
+                <td>@r.Change</td>
+                <td>@r.TypeRequest</td>
+
+                <button class="btn btn-primiary"><a href="@($"/detailsRequest/{r.Id}")">Szczegóły</a></button>
+                <button class="btn btn-primiary"><a href="@($"/editRequest/{r.Id}")">Edycja</a></button>
+
+            </tr>
+        }
+        <br />
+    </table>
+</p>
+
+@code {
+    List<RequestModel> requests = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var req = await _mediator.Send(new GetRequestsQuery());
+        requests = _mapper.Map<List<RequestModel>>(req);
+    }
+}
+
+
