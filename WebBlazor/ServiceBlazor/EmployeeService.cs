@@ -22,14 +22,17 @@ namespace WebBlazor.ServiceBlazor
             return await httpClient.GetFromJsonAsync<List<EmployeeModel>>("api/employee/allEmployees");
         }
 
-        public Task<EmployeeModel> GetEmployeeById(int id)
+        public async Task<EmployeeModel> GetEmployeeById(int id)
         {
-            throw new NotImplementedException();
+            return await httpClient.GetFromJsonAsync<EmployeeModel>($"api/employee/getEmployeeById/{id}");
         }
 
-        public Task<EmployeeModel> CreateEmployee(EmployeeModel employee)
+        public async Task<EmployeeModel> CreateEmployee(EmployeeModel employee)
         {
+            //var input = await httpClient.PostAsJsonAsync<EmployeeModel>("api/employee/createEmployee", employee);
+            //https://github.com/GavinLonDigital/ShopOnlineSolution/blob/main/ShopOnline.Web/Services/ShoppingCartService.cs
             throw new NotImplementedException();
+
         }
 
         public Task<EmployeeModel> EditEmployee(EmployeeModel employee)

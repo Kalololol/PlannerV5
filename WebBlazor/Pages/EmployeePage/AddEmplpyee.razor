@@ -4,6 +4,7 @@
 @using Domain;
 @inject IMediator _mediator
 @inject IMapper _mapper
+@inject IEmployeeService _employeeService
 
 
 
@@ -45,6 +46,7 @@
 
     private async Task InsertEmployee()
     {
+        //await _employeeService.CreateEmployee(employee);
         var result = _mapper.Map<CreateEmployeeCommand>(employee);
         await _mediator.Send(result);
     }
