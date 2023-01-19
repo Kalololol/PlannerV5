@@ -46,9 +46,9 @@
 
     private async Task InsertEmployee()
     {
-        //await _employeeService.CreateEmployee(employee);
-        var result = _mapper.Map<CreateEmployeeCommand>(employee);
-        await _mediator.Send(result);
+        await _employeeService.AddEmployee(employee);
+        //var result = _mapper.Map<CreateEmployeeCommand>(employee);
+        //await _mediator.Send(result);
     }
 
 }

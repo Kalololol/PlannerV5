@@ -1,8 +1,7 @@
-﻿using Application.ModelDto;
-using Application.Service.Command;
-using AutoMapper;
-using MediatR;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Net;
+using System.Net.Http;
 using System.Net.Http.Json;
 using WebBlazor.ModelWebBlazor;
 
@@ -11,7 +10,6 @@ namespace WebBlazor.ServiceBlazor
     public class EmployeeService : IEmployeeService
     {
         private readonly HttpClient httpClient;
-
         public EmployeeService(HttpClient httpClient)
         {
             this.httpClient = httpClient;
@@ -26,12 +24,32 @@ namespace WebBlazor.ServiceBlazor
         {
             return await httpClient.GetFromJsonAsync<EmployeeModel>($"api/employee/getEmployeeById/{id}");
         }
+        //https://github.com/GavinLonDigital/ShopOnlineSolution/blob/main/ShopOnline.Web/Services/ShoppingCartService.cs
 
-        public async Task<EmployeeModel> CreateEmployee(EmployeeModel employee)
+        public async Task<EmployeeModel> AddEmployee(EmployeeModel employee)
         {
-            //var input = await httpClient.PostAsJsonAsync<EmployeeModel>("api/employee/createEmployee", employee);
+            try
+            {                                
+                var response = await httpClient.PostAsJsonAsync("api/employee/addEmployee", employee);
+                if (response.IsSuccessStatusCode)
+                {
+                    /*if (response.StatusCode == HttpStatusCode.NoContent)
+                    {
+                        return default(EmployeeModel);
+                    }*/
+                    return employee;
+                }
+                else
+                {
+                    var message = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Http status:{response.StatusCode} Message -{message}");
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
             //https://github.com/GavinLonDigital/ShopOnlineSolution/blob/main/ShopOnline.Web/Services/ShoppingCartService.cs
-            throw new NotImplementedException();
 
         }
 

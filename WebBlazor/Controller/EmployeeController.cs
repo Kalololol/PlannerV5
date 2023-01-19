@@ -77,10 +77,10 @@ namespace WebBlazor.Controller
             }
         }
         [HttpPost]
-        [Route("createEmployee")]
+        [Route("addEmployee")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<EmployeeModel>> CreateEmployee(EmployeeModel employee)
+        public async Task<ActionResult<EmployeeModel>> AddEmployee(EmployeeModel employee)
         {
 
             try

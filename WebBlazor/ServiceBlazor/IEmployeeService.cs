@@ -7,7 +7,7 @@ namespace WebBlazor.ServiceBlazor
     {
         Task<List<EmployeeModel>> GetEmployees();
         Task<EmployeeModel> GetEmployeeById(int id);
-        Task<EmployeeModel> CreateEmployee(EmployeeModel employee);
+        Task<EmployeeModel> AddEmployee(EmployeeModel employee);
         Task<EmployeeModel> EditEmployee(EmployeeModel employee);
 
     }

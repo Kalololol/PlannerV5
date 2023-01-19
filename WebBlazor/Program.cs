@@ -28,7 +28,7 @@ builder.Services.AddMediatR(typeof(MediatorConfiguration).GetTypeInfo().Assembly
 builder.Services.AddSingleton(AutoMapperConfigurationWebBlazor.Initialize());
 
 builder.Services.AddHttpClient();
-//builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7205/") });
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7205/") });
 
 builder.Services.AddHttpClient<IEmployeeService, EmployeeService>
     (client =>
