@@ -1,35 +1,30 @@
 ﻿@page "/editEmployee"
 @page "/editEmployee/{id:int}"
-
-
-@using Application.Service.Command;
-@using Application.Service.Queries;
-@inject IMediator _mediator
-@inject IMapper _mapper 
+@inject IEmployeeService _employeeService
 
 <h3>EditEmployee</h3>
 
-<EditForm Model="@employee" OnValidSubmit="@OnInitializedAsync">
+<EditForm Model="@result" OnValidSubmit="@OnInitializedAsync">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
-    <td>Imię: </td>
-    <InputText id="name" @bind-Value="employee.Name" required />
+    <td>Imię: @employee.Name </td>
+    <InputText id="name" @bind-Value="result.Name" required />
     <br />
-    <td>Nazwisko: </td>
-    <InputText id="surname" @bind-Value="employee.Surname" required />
+    <td>Nazwisko: @employee.Surname</td>
+    <InputText id="surname" @bind-Value="result.Surname" required />
     <br />
-    <td>Adres e-mail: </td>
-    <InputText id="addressemail" @bind-Value="employee.AddressEmail" required />
+    <td>Adres e-mail: @employee.AddressEmail</td>
+    <InputText id="addressemail" @bind-Value="result.AddressEmail" required />
     <br />
-    <td>Telefon: </td>
-    <InputText id="phonenumber" @bind-Value="employee.PhoneNumber" required />
+    <td>Telefon: @employee.PhoneNumber</td>
+    <InputText id="phonenumber" @bind-Value="result.PhoneNumber" required />
     <br />
-    <td>Prawo wyk. zawodu: </td>
-    <InputText id="licensenumber" @bind-Value="employee.LicenseNumber" required />
+    <td>Prawo wyk. zawodu: @employee.LicenseNumber</td>
+    <InputText id="licensenumber" @bind-Value="result.LicenseNumber" required />
     <br />
-    <td>Hasło: </td>
-    <InputText id="password" @bind-Value="employee.Password" required />
+    <td>Hasło: @employee.Password</td>
+    <InputText id="password" @bind-Value="result.Password" required />
     <br />
     <br />
     <button type="submit" @onclick="EmployeeEdit">Zatwierdź zmiany</button>
@@ -41,16 +36,17 @@
     public int Id { get; set; }
 
     EmployeeModel employee = new();
+    EmployeeModel result = new();
 
     protected override async Task OnInitializedAsync()
     {
         base.OnInitialized();
-        var empl = await _mediator.Send(new GetEmployeeByIdQuery(Id));
-        employee = _mapper.Map<EmployeeModel>(empl);
+        employee = await _employeeService.GetEmployeeById(Id);
     }
 
     private async Task EmployeeEdit()
     {
-        await _mediator.Send(_mapper.Map<EditEmployeeCommand>(employee));
+        result.Id = Id;
+        await _employeeService.EditEmployee(result);
     }
 }

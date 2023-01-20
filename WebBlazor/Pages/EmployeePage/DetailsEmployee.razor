@@ -1,9 +1,6 @@
 ﻿@page "/detailsEmployee"
 @page "/detailsEmployee/{id:int}"
-
-@using Application.Service.Queries;
-@inject IMediator _mediator
-@inject IMapper _mapper
+@inject IEmployeeService _employeeService
 
 <PageTitle>SPG - szczegóły pracownika</PageTitle>
 
@@ -40,7 +37,6 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        var empl =  await _mediator.Send(new GetEmployeeByIdQuery(Id));
-        employee = _mapper.Map<EmployeeModel>(empl);
+        employee = await _employeeService.GetEmployeeById(Id);
     }
 }

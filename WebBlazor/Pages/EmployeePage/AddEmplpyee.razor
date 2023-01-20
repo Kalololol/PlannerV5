@@ -1,9 +1,4 @@
 ﻿@page "/addEmployee"
-@using Application.ModelDto;
-@using Application.Service.Command;
-@using Domain;
-@inject IMediator _mediator
-@inject IMapper _mapper
 @inject IEmployeeService _employeeService
 
 
@@ -47,8 +42,7 @@
     private async Task InsertEmployee()
     {
         await _employeeService.AddEmployee(employee);
-        //var result = _mapper.Map<CreateEmployeeCommand>(employee);
-        //await _mediator.Send(result);
+
     }
 
 }

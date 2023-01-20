@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Application.ModelDto;
+using AutoMapper;
 using Data.Repositories;
 using Domain;
 using MediatR;
@@ -19,8 +20,7 @@ namespace Application.Service.Command
         public string PhoneNumber { get; set; }
         public string LicenseNumber { get; set; }
         public string Password { get; set; }
-
-
+              
         public EditEmployeeCommand(int id, string name, string surname, string addressEmail, string phoneNumber, string licenseNumber, string password)
         {
             Id = id;

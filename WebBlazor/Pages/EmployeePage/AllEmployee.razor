@@ -1,7 +1,5 @@
 ﻿@page "/allEmployees"
-@using Application.Service.Queries;
-@inject IMapper _mapper
-@inject IMediator _mediator
+@inject IEmployeeService _employeeService
 
 <p><h3>Wszyscy pracownicy</h3> <a href="@("/employeecreate")">Dodaj pracownika</a></p>
 <p>
@@ -41,8 +39,8 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        var input = await _mediator.Send(new GetEmployeesQuery());
-        employees = _mapper.Map<List<EmployeeModel>>(input);
+        employees = await _employeeService.GetEmployees();
+
     }
 
 }

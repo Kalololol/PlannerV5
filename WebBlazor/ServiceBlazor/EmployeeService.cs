@@ -49,13 +49,31 @@ namespace WebBlazor.ServiceBlazor
             {
                 throw;
             }
-            //https://github.com/GavinLonDigital/ShopOnlineSolution/blob/main/ShopOnline.Web/Services/ShoppingCartService.cs
-
         }
 
-        public Task<EmployeeModel> EditEmployee(EmployeeModel employee)
+        public async Task<EmployeeModel> EditEmployee(EmployeeModel employee)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var response = await httpClient.PostAsJsonAsync("api/employee/editEmployee", employee);
+                if (response.IsSuccessStatusCode)
+                {
+                    /*if (response.StatusCode == HttpStatusCode.NoContent)
+                    {
+                        return default(EmployeeModel);
+                    }*/
+                    return employee;
+                }
+                else
+                {
+                    var message = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Http status:{response.StatusCode} Message -{message}");
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         
