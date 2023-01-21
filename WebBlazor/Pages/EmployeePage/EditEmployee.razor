@@ -28,6 +28,7 @@
     <br />
     <br />
     <button type="submit" @onclick="EmployeeEdit">Zatwierdź zmiany</button>
+
 </EditForm>
 
 
@@ -49,4 +50,5 @@
         result.Id = Id;
         await _employeeService.EditEmployee(result);
     }
+
 }

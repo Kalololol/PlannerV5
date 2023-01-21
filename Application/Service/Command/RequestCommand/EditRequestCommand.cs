@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Service.Command.RequestCommand
+namespace Application.Service.Command
 {
     public class EditRequestCommand : IRequest
     {
@@ -16,6 +16,7 @@ namespace Application.Service.Command.RequestCommand
         public DateTime DayIndisposition { get; set; }
         public char Change { get; set; } //D-Day, N-Night, A-AllDay
         public char TypeRequest { get; set; } // W-Work, H-Holiday
+        public bool Active { get; set; }
     }
 
     public class EditRequestCommandHandler : IRequestHandler<EditRequestCommand, Unit>
@@ -38,6 +39,7 @@ namespace Application.Service.Command.RequestCommand
                 req.DayIndisposition = request.DayIndisposition;
                 req.Change = request.Change;
                 req.TypeRequest= request.TypeRequest;
+                req.Active = request.Active;    
             }
 
             _requestRepository.Update(req);

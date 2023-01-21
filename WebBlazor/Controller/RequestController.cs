@@ -5,42 +5,40 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebBlazor.ModelWebBlazor;
-using WebBlazor.Pages.EmployeePage;
 
 namespace WebBlazor.Controller
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EmployeeController : ControllerBase
+    public class RequestController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
-        public EmployeeController(IMapper mapper, IMediator mediator)
+        public RequestController(IMapper mapper, IMediator mediator)
         {
             _mapper = mapper;
             _mediator = mediator;
         }
 
         [HttpGet]
-        [Route("allEmployees")]
+        [Route("allRequests")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<IList<EmployeeModel>>> GetAll()
+        public async Task<ActionResult<IList<RequestModel>>> GetAll()
         {
-
             try
             {
-                List<EmployeeModel> result = new List<EmployeeModel>();
-                var employees = await _mediator.Send(new GetEmployeesQuery());
+                List<RequestModel> result = new List<RequestModel>();
+                var requests = await _mediator.Send(new GetRequestsQuery());
 
-                if (employees == null) return NotFound();
+                if (requests == null) return NotFound();
                 else
                 {
-                    foreach (var e in employees)
+                    foreach (var r in requests)
                     {
-                        var employee = _mapper.Map<EmployeeModel>(e);
-                        result.Add(employee);
+                        var request = _mapper.Map<RequestModel>(r);
+                        result.Add(request);
                     }
                     return Ok(result);
                 }
@@ -53,42 +51,42 @@ namespace WebBlazor.Controller
         }
 
         [HttpGet("{id:int}")]
-        [Route("getEmployeeById/{id}")]
+        [Route("getRequestById/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-        public async Task<ActionResult<EmployeeModel>> GetEmployeeById(int id)
+        public async Task<ActionResult<RequestModel>> GetRequestById(int id)
         {
             try
             {
-                var item = await _mediator.Send(new GetEmployeeByIdQuery(id));
+                var item = await _mediator.Send(new GetRequestByIdQuery(id));
 
                 if (item == null) return NotFound();
                 else
                 {
-                    var result = _mapper.Map<EmployeeModel>(item);
+                    var result = _mapper.Map<RequestModel>(item);
                     return Ok(result);
                 }
 
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Brak użtkownika o podanym identyfikatorze");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Brak obiektu o podanym identyfikatorze");
             }
         }
         [HttpPost]
-        [Route("addEmployee")]
+        [Route("addRequest")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<EmployeeModel>> AddEmployee(EmployeeModel employee)
+        public async Task<ActionResult<RequestModel>> AddRequest(RequestModel request)
         {
 
             try
             {
-                if (employee == null)
+                if (request == null)
                     return BadRequest();
 
-                await _mediator.Send(_mapper.Map<CreateEmployeeCommand>(employee));
+                await _mediator.Send(_mapper.Map<CreateRequestCommand>(request));
 
                 //   return CreatedAtAction(nameof(GetEmployeeById),  employee);
                 return Ok("Dodano");
@@ -140,6 +138,5 @@ namespace WebBlazor.Controller
                     "Error creating new employee record");
             }
         }
-
     }
 }

@@ -12,6 +12,7 @@ namespace Application.Service.Command
     public class DeleteEmployeeCommand : IRequest
     {
         public int Id { get; set; }
+
     }
 
     public class DeleteEmployeeCommandHandler : IRequestHandler<DeleteEmployeeCommand, Unit>
@@ -30,7 +31,8 @@ namespace Application.Service.Command
 
             if (employee != null)
             {
-                _employeeRepository.Delete(employee);
+                employee.Active = false;
+                _employeeRepository.Update(employee);
             }
 
             return Task.FromResult(Unit.Value);

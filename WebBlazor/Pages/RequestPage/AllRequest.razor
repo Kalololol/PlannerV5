@@ -1,7 +1,6 @@
 ﻿@page "/allRequest"
-@using Application.Service.Queries;
-@inject IMediator _mediator
-@inject IMapper _mapper
+@inject IRequestService _requestService
+
 
 
 <h3>EditRequest</h3>
@@ -36,8 +35,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var req = await _mediator.Send(new GetRequestsQuery());
-        requests = _mapper.Map<List<RequestModel>>(req);
+        await base.OnInitializedAsync();
+        requests = await _requestService.GetRequests();
     }
 }
 

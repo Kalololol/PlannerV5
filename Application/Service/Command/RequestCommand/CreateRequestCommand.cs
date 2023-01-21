@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Service.Command.RequestCommand
+namespace Application.Service.Command
 {
     public class CreateRequestCommand : IRequest
     {

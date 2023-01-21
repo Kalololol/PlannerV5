@@ -1,7 +1,42 @@
 ﻿@page "/detailsRequest"
 @page "/detailsRequest/{id:int}"
+@inject IRequestService _requestService
+
+
 <h3>DetailsRequest</h3>
 
+
+<h3>Prośba @request.DayIndisposition </h3>
+
+<table class="table">
+    <tr>
+        <th><a class="nav-link">Data</a></th>
+        <th><a class="nav-link">Zmiana</a></th>
+        <th><a class="nav-link">Typ prośby</a></th>
+
+    </tr>
+    <tr>
+        <td>@request.DayIndisposition</td>
+        <td>@request.Change</td>
+        <td>@request.TypeRequest</td>
+        <button class="btn btn-primiary"><a href="@($"/editRequest/{request.Id}")">Edycja</a></button>
+
+    </tr>
+    <br />
+    <a href="@($"/allRequest")">Cofnij</a>
+</table>
+
 @code {
+    [Parameter]
+    public int Id { get; set; }
+
+    RequestModel request = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        request = await _requestService.GetRequestById(Id);
+    }
 
 }
+

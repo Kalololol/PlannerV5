@@ -35,6 +35,11 @@ builder.Services.AddHttpClient<IEmployeeService, EmployeeService>
     {
         client.BaseAddress = new Uri(("https://localhost:7205/"));
     });
+builder.Services.AddHttpClient<IRequestService, RequestService>
+    (client =>
+    {
+        client.BaseAddress = new Uri(("https://localhost:7205/"));
+    });
 
 var app = builder.Build();
 

@@ -1,0 +1,40 @@
+﻿@page "/addRequest"
+@inject IRequestService _requestService
+
+
+
+<h3>Dodaj nową prośbę</h3>
+
+
+<EditForm Model="@request" OnValidSubmit="@InsertRequest">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <td>Data: </td>
+    <InputDate id="dayindisposition" @bind-Value="DayIndisposition" required />
+    <br />
+    <td>Zmiana: </td>
+    <InputText id="change" @bind-Value="Change" required />
+    <br />
+    <td>Typ prośby: </td>
+    <InputText id="typerequest" @bind-Value="TypeRequest" required />
+    <br />
+    <br />
+    <br />
+    <button type="submit">Submit</button>
+</EditForm>
+
+
+@code {
+    RequestModel request = new();
+    public DateTime DayIndisposition { get; set; }
+    public string Change { get; set; }
+    public string TypeRequest { get; set; }
+
+    private async Task InsertRequest()
+    {
+        await _requestService.AddRequest(request);
+
+    }
+
+}

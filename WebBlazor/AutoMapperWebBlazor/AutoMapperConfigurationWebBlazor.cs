@@ -21,6 +21,7 @@ namespace WebBlazor.AutoMapperWebBlazor
 
 
                cfg.CreateMap<Request, RequestDto>().ReverseMap();
+               cfg.CreateMap<RequestDto, RequestModel>().ReverseMap();
 
 
            }).CreateMapper();

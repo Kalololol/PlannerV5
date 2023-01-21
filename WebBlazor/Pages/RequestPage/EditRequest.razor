@@ -1,12 +1,54 @@
 ﻿@page "/editRequest"
 @page "/editRequest/{id:int}"
-
+@inject IRequestService _requestService
 
 
 <h3>EditRequest</h3>
 
+<EditForm Model="@result" OnValidSubmit="@OnInitializedAsync">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <br />
+    <td>Data: @DayIndisposition</td>
+    <InputDate id="change" @bind-Value="DayIndisposition" required />
+    <br />
+    <td>Zmiana: @Change</td>
+    <InputText id="change" @bind-Value="Change" required />
+    <br />
+    <td>Typ prośby: @TypeRequest</td>
+    <InputText id="typerequest" @bind-Value="TypeRequest" required />
+    <td>Usuń prośbę: </td>
+    <InputCheckbox id="active" @bind-Value="request.Active" required />
+
+    <br />
+    <br />
+    <button type="submit" @onclick="RequestEdit">Zatwierdź zmiany</button>
+
+</EditForm>
 
 
 @code {
+    [Parameter]
+    public int Id { get; set; }
+    public string Change { get; set; }
+    public DateTime DayIndisposition { get; set; }
+    public string TypeRequest { get; set; }
+
+    RequestModel request = new();
+    RequestModel result = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitialized();
+        request = await _requestService.GetRequestById(Id);
+    }
+
+    private async Task RequestEdit()
+    {
+        result.Id = Id;
+        await _requestService.EditRequest(result);
+    }
 
 }
+

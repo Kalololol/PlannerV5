@@ -21,7 +21,8 @@
             <td>@employee.Password</td>
 
 
-            <button class="btn btn-primiary"><a href="@($"/editEmployee/{employee.Id}")">Edycja</a></button>
+        <button class="btn btn-primiary"><a href="@($"/editEmployee/{employee.Id}")">Edycja</a></button>
+        <button type="submit" @onclick="EmployeeDeleted">Usuń użytownika</button>
 
         </tr>
     <br />
@@ -38,5 +39,10 @@
     {
         await base.OnInitializedAsync();
         employee = await _employeeService.GetEmployeeById(Id);
+    }
+
+    private async Task EmployeeDeleted()
+    {
+        await _employeeService.DeleteEmployee(employee);
     }
 }

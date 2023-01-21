@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http;
@@ -76,6 +77,31 @@ namespace WebBlazor.ServiceBlazor
             }
         }
 
-        
+        public async Task<EmployeeModel> DeleteEmployee(EmployeeModel employee)
+        {
+            try
+            {
+                var response = await httpClient.PostAsJsonAsync("api/employee/deleteEmployeeById", employee);
+                if (response.IsSuccessStatusCode)
+                {
+                    /*if (response.StatusCode == HttpStatusCode.NoContent)
+                    {
+                        return default(EmployeeModel);
+                    }*/
+                    return employee;
+                }
+                else
+                {
+                    var message = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Http status:{response.StatusCode} Message -{message}");
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+}
+
+
     }
 }
