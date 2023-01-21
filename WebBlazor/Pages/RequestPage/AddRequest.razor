@@ -14,10 +14,23 @@
     <InputDate id="dayindisposition" @bind-Value="DayIndisposition" required />
     <br />
     <td>Zmiana: </td>
-    <InputText id="change" @bind-Value="Change" required />
+    <label>
+        <InputSelect @bind-Value="Change">
+            <option value="">Wybierz...</option>
+            <option value="D">Dzień</option>
+            <option value="N">Noc</option>
+            <option value="A">Cały dzień</option>
+        </InputSelect>
+    </label>
     <br />
     <td>Typ prośby: </td>
-    <InputText id="typerequest" @bind-Value="TypeRequest" required />
+    <label>
+        <InputSelect @bind-Value="TypeRequest">
+            <option value="">Wybierz...</option>
+            <option value="W">Praca</option>
+            <option value="H">Wolne</option>
+        </InputSelect>
+    </label>
     <br />
     <br />
     <br />
@@ -27,7 +40,7 @@
 
 @code {
     RequestModel request = new();
-    public DateTime DayIndisposition { get; set; }
+    public DateTime DayIndisposition = DateTime.Now;
     public string Change { get; set; }
     public string TypeRequest { get; set; }
 
