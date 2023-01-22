@@ -1,6 +1,7 @@
 ﻿@page "/detailsRequest"
 @page "/detailsRequest/{id:int}"
 @inject IRequestService _requestService
+@inject NavigationManager NavigationManager
 
 
 <h3>DetailsRequest</h3>
@@ -27,8 +28,8 @@ else{
 
     </tr>
     <br />
-    <a href="@($"/allRequest")">Cofnij</a>
-</table>
+        <MudButton Variant="Variant.Filled" Color="Color.Transparent" OnClick="OnButtonClickedBack">Cofnij</MudButton>
+    </table>
 }
 
 @code {
@@ -42,6 +43,9 @@ else{
         await base.OnInitializedAsync();
         request = await _requestService.GetRequestById(Id);
     }
-
+    void OnButtonClickedBack()
+    {
+        NavigationManager.NavigateTo("/allRequest");
+    }
 }
 

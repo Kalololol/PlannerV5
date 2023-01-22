@@ -1,6 +1,9 @@
 ﻿@page "/editRequest"
 @page "/editRequest/{id:int}"
 @inject IRequestService _requestService
+@inject IDialogService DialogService
+@inject NavigationManager NavigationManager
+
 
 
 <h3>EditRequest</h3>
@@ -36,7 +39,8 @@
     <br />
     <br />
         <button type="submit" @onclick="RequestEdit">Zatwierdź zmiany</button>
-        <button type="submit" @onclick="RequestDeleted">Usuń prośbę</button>
+
+        <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="OnButtonClicked">Delete</MudButton>
 
     }
 </EditForm>
@@ -45,17 +49,33 @@
 
 
 @code {
+
+    private async void OnButtonClicked()
+    {
+        string state="";
+        bool? result = await DialogService.ShowMessageBox(
+            "Usuwasz obiekt",
+            "Czy na pewno chcesz usunąć?",
+            yesText: "TAK-USUŃ!", cancelText: "ANULUJ");
+        state = result == null ? "0" : "1";
+        StateHasChanged();
+        if (result == true) {
+            await RequestDeleted();
+            NavigationManager.NavigateTo("/allRequest");
+        }
+        
+    }
+
     [Parameter]
     public int Id { get; set; }
     bool Active = true; 
 
-    public string Change { get; set; }
-    public string TypeRequest { get; set; }
+    private string Change { get; set; }
+    private string TypeRequest { get; set; }
 
     RequestModel request = new();
     RequestModel result = new();
     RequestModel deletedRequest = new();
-
 
 
     protected override async Task OnInitializedAsync()
@@ -88,6 +108,8 @@
         if (request.TypeRequest == 'W') TypeRequest = "Praca";
         else Change = "Wolne";
     }
+
+
 
 }
 

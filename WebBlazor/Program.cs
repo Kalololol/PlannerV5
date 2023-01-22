@@ -1,13 +1,9 @@
 using Application;
-using Application.Mapping;
 using Data.Context;
 using Data.Repositories;
 using MediatR;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Syncfusion.Blazor;
+using MudBlazor.Services;
 using System.Reflection;
 using WebBlazor.AutoMapperWebBlazor;
 using WebBlazor.ServiceBlazor;
@@ -43,6 +39,8 @@ builder.Services.AddScoped<IRequestService, RequestService>();
 //    {
 //        client.BaseAddress = new Uri(("https://localhost:7205/"));
 //    });
+
+builder.Services.AddMudServices();
 
 var app = builder.Build();
 

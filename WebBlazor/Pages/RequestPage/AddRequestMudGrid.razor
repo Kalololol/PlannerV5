@@ -1,0 +1,27 @@
+﻿@page "/addRequestMud"
+
+
+<h3>Dodaj prośby grafikowe</h3>
+
+<MudSelect T="string" @bind-Value="@Change" Label="Zmiana:" AnchorOrigin="Origin.BottomCenter">
+    <MudSelectItem Value=@("D")>Dzień</MudSelectItem>
+    <MudSelectItem Value="@("N")">Noc</MudSelectItem>
+    <MudSelectItem Value="@("A")">Cały dzień</MudSelectItem>
+</MudSelect>
+<MudSelect T="string" @bind-Value="@TypeRequest" Label="Typ prośby:" AnchorOrigin="Origin.BottomCenter">
+    <MudSelectItem Value=@("W")>Praca</MudSelectItem>
+    <MudSelectItem Value="@("F")">Wolne</MudSelectItem>
+</MudSelect>
+
+
+
+
+@code {
+    RequestModel request = new();
+    public string Change { get; set; }
+    public string TypeRequest { get; set; }
+
+
+
+    
+}

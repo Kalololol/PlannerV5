@@ -1,6 +1,7 @@
 ﻿@page "/addRequest"
 @inject IRequestService _requestService
-
+@inject IDialogService DialogService
+@inject NavigationManager NavigationManager
 
 
 <h3>Dodaj nową prośbę</h3>
@@ -33,7 +34,9 @@
     <br />
     <br />
     <br />
-    <button type="submit">Zapisz</button>
+    <MudButton Variant="Variant.Filled" Color="Color.Success" OnClick="OnButtonClicked">Zapisz</MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Transparent" OnClick="OnButtonClickedBack">Cofnij</MudButton>
+
 </EditForm>
 
 
@@ -41,8 +44,26 @@
     RequestModel request = new();
     public DateTime DayIndisposition = DateTime.Now;
 
+    void OnButtonClickedBack()
+    {
+        NavigationManager.NavigateTo("/allRequest");
+    }
 
-
+    private async void OnButtonClicked()
+    {
+        string state = "";
+        bool? result = await DialogService.ShowMessageBox(
+            "Dodawanie nowego obiektu",
+            "Czy na pewno chcesz dodać nowego użytkownika?",
+            yesText: "TAK-DODAJ!", cancelText: "ANULUJ");
+        state = result == null ? "0" : "1";
+        StateHasChanged();
+        if (result == true)
+        {
+            await InsertRequest();
+            NavigationManager.NavigateTo("/allRequest");
+        }
+    }
     private async Task InsertRequest()
     {
         request.DayIndisposition = DayIndisposition;

@@ -1,9 +1,12 @@
 ﻿@page "/allRequest"
 @inject IRequestService _requestService
+@inject NavigationManager NavigationManager
 
 
-
+<div>
 <h3>Prośby grafikowe</h3>
+<MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="OnButtonClickedBack">Dodaj nową prośbę</MudButton>
+</div>
 @if(requests == null)
 {
     <p><em>Loading...</em></p>
@@ -42,7 +45,10 @@ else {
         await base.OnInitializedAsync();
         requests = await _requestService.GetRequests();
     }
-
+    void OnButtonClickedBack()
+    {
+        NavigationManager.NavigateTo("/addRequestMud");
+    }
 
 }
 

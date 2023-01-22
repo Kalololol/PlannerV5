@@ -1,7 +1,11 @@
 ﻿@page "/allEmployees"
 @inject IEmployeeService _employeeService
+@inject IRequestService _requestService
+@inject NavigationManager NavigationManager
 
-<p><h3>Wszyscy pracownicy</h3> <a href="@("/employeecreate")">Dodaj pracownika</a></p>
+<p>
+    <h3>Wszyscy pracownicy</h3> 
+</p>
 <p>
 
     @if (employees == null)
@@ -33,6 +37,7 @@
             }
             </tbody>
         </table>
+        <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="OnButtonClickedBack">Dodaj nowego pracownika</MudButton>
     }
 </p>
 
@@ -46,5 +51,8 @@
 
     }
 
-
+    void OnButtonClickedBack()
+    {
+        NavigationManager.NavigateTo("/addEmployeeMud");
+    }
 }

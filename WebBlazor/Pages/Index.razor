@@ -1,11 +1,5 @@
 ﻿@page "/"
-@using Application.ModelDto;
-@using Application.Service.Queries;
-@using Domain;
 @using Syncfusion.Blazor.Grids
-@inject IRepository<Employee> _employee;
-@inject IMediator _mediator
-@inject IMapper _mapper
 @inject IEmployeeService _employeeService
 
 <PageTitle>Index</PageTitle>
@@ -42,6 +36,9 @@ else {
 </table>
 }
 
+
+
+
 @code{
     List<EmployeeModel> employees = new List<EmployeeModel> ();
 
@@ -52,5 +49,6 @@ else {
         employees = await _employeeService.GetEmployees();
                 
     }
+
 
 }

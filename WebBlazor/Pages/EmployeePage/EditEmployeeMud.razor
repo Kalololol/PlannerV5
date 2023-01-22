@@ -1,0 +1,81 @@
+﻿@page "/editEmployee"
+@page "/editEmployee/{id:int}"
+@inject IEmployeeService _employeeService
+@using System.Text.RegularExpressions
+@using System.ComponentModel.DataAnnotations
+@inject NavigationManager NavigationManager
+@inject IDialogService DialogService
+
+<h3>EditEmployeeMud</h3>
+
+<MudGrid>
+    <MudItem xs="12" sm="7">
+        <MudPaper Class="pa-4">
+            <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
+                <MudTextField T="string" @bind-Value="employee.Name" Label="Imię" Required="true" RequiredError="Pole Imię jest wymagane!" />
+                <MudTextField T="string" @bind-Value="employee.Surname" Label=" Nazwisko" Required="true" RequiredError="Pole Nazwisko jest wymagane!" />
+                <MudTextField T="string" @bind-Value="employee.AddressEmail" Label=" Adres email" Required="true" RequiredError="Pole Email jest wymagane!"
+                              Validation="@(new EmailAddressAttribute() {ErrorMessage = "Adres email jest nieprawidłowy"})" />
+                <MudNumericField T="string" @bind-Value="employee.PhoneNumber" Label=" Telefon" Required="true" RequiredError="Pole Telefon jest wymagane i musi składać się z samych cyfr!" />
+                <MudTextField T="string" @bind-Value="employee.LicenseNumber" Label=" Prawo wyk. zawodu" Required="true" RequiredError="Pole Prawo wyk. zawodu jest wymagane!" />
+                
+                <div class="d-flex align-center justify-space-between">
+                    <MudCheckBox T="bool" Required="true" RequiredError="Musisz potwierdzić wprowadzone dane!" Label="Potwierdzam dane" />
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="OnButtonClicked" Disabled="@(!success)">Zapisz</MudButton>
+                </div>
+            </MudForm>
+        </MudPaper>
+        <MudPaper Class="pa-4 mt-4">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@(()=>form.Validate())">Sprwadź wprowadzone dane</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="@(()=>form.Reset())" Class="mx-2">Wyczyść formularz</MudButton>
+            <MudButton Variant="Variant.Filled" DisableElevation="true" OnClick="@(()=>form.ResetValidation())">Wyczyść błędy</MudButton>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" sm="5">
+        <MudPaper Class="pa-4 mud-height-full">
+            <MudText Typo="Typo.subtitle2">@($"Błędy ({errors.Length})")</MudText>
+                @foreach (var error in errors)
+            {
+                <MudText Color="@Color.Error">@error</MudText>
+            }
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    EmployeeModel employee = new();
+    bool success;
+    string[] errors = { };
+    MudTextField<string> pwField1 = new();
+    MudForm form = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitialized();
+        employee = await _employeeService.GetEmployeeById(Id);
+    }
+        
+    private async Task EditEmployee()
+    {
+        employee.Id = Id;
+        await _employeeService.EditEmployee(employee);
+    }
+    private async void OnButtonClicked()
+    {
+        string state="";
+        bool? result = await DialogService.ShowMessageBox(
+            "Edycja obiektu",
+            "Czy na pewno chcesz wprowadzić zmiany?",
+            yesText: "TAK-ZMIEŃ!", cancelText: "ANULUJ");
+        state = result == null ? "0" : "1";
+        StateHasChanged();
+        if (result == true) {
+            await EditEmployee();
+            NavigationManager.NavigateTo("/allEmployees");
+        }
+        
+    }
+}
