@@ -29,6 +29,8 @@
             <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@(()=>form.Validate())">Sprwadź wprowadzone dane</MudButton>
             <MudButton Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="@(()=>form.Reset())" Class="mx-2">Wyczyść formularz</MudButton>
             <MudButton Variant="Variant.Filled" DisableElevation="true" OnClick="@(()=>form.ResetValidation())">Wyczyść błędy</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="OnButtonClickedDetails" >Cofnij</MudButton>
+
         </MudPaper>
     </MudItem>
     <MudItem xs="12" sm="5">
@@ -57,7 +59,7 @@
         base.OnInitialized();
         employee = await _employeeService.GetEmployeeById(Id);
     }
-        
+
     private async Task EditEmployee()
     {
         employee.Id = Id;
@@ -74,8 +76,11 @@
         StateHasChanged();
         if (result == true) {
             await EditEmployee();
-            NavigationManager.NavigateTo("/allEmployees");
+            NavigationManager.NavigateTo($"/detailsEmployee/{Id}");
         }
-        
+    }
+    void OnButtonClickedDetails()
+    {
+        NavigationManager.NavigateTo($"/detailsEmployee/{Id}");
     }
 }

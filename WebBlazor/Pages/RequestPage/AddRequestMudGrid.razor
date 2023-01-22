@@ -1,7 +1,12 @@
 ﻿@page "/addRequestMud"
+@using System.Globalization
 
 
 <h3>Dodaj prośby grafikowe</h3>
+
+<MudSwipeArea OnSwipe="@OnSwipe">
+    <MudDatePicker PickerVariant="PickerVariant.Static" Date="@(DateTime.Today.AddDays(1))" @bind-PickerMonth="@_pickerMonth" />
+</MudSwipeArea>
 
 <MudSelect T="string" @bind-Value="@Change" Label="Zmiana:" AnchorOrigin="Origin.BottomCenter">
     <MudSelectItem Value=@("D")>Dzień</MudSelectItem>
@@ -20,8 +25,23 @@
     RequestModel request = new();
     public string Change { get; set; }
     public string TypeRequest { get; set; }
+    public DateTime DayIndisposition { get; set; }
 
+    DateTime? _pickerMonth = DateTime.Now;
 
+    public void OnSwipe(SwipeDirection direction)
+    {
+        if (direction == SwipeDirection.LeftToRight)
+        {
+            _pickerMonth = _pickerMonth.Value.AddMonths(-1);
+            StateHasChanged();
+        }
+        else if (direction == SwipeDirection.RightToLeft)
+        {
+            _pickerMonth = _pickerMonth.Value.AddMonths(1);
+            StateHasChanged();
+        }
+    }
 
     
 }
