@@ -1,4 +1,6 @@
-﻿namespace WebBlazor.ModelWebBlazor
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace WebBlazor.ModelWebBlazor
 {
     public class RequestModel
     {

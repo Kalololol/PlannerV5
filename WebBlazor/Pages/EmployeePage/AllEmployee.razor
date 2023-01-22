@@ -13,22 +13,25 @@
     else
     {
         <table class="table">
+             <thead>
             <tr>
                 <th><a class="nav-link">Imię i Nazwisko</a></th>
                 <th><a class="nav-link">Prawo wyk. zawodu</a></th>
                 <th><a class="nav-link">Telefon</a></th>
             </tr>
+             </thead>
+                 <tbody>
             @foreach (var e in employees)
             {
                 <tr>
                     <td>@e.Name @e.Surname</td>
                     <td>@e.LicenseNumber</td>
                     <td>@e.PhoneNumber</td>
-                    <button class="btn btn-primiary"><a href="@($"/detailsEmployee/{e.Id}")">Szczegóły</a></button>
-                    <button class="btn btn-primiary"><a href="@($"/editEmployee/{e.Id}")">Edycja</a></button>
+                        <button class="btn btn-primiary"><a href="@($"/detailsEmployee/{e.Id}")"><i class="oi oi-document"></i></a></button>
+                        <button class="btn btn-primiary"><a href="@($"/editEmployee/{e.Id}")"><i class="oi oi-pencil"></i></a></button>
                 </tr>
             }
-            <br />
+            </tbody>
         </table>
     }
 </p>

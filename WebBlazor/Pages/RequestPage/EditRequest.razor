@@ -8,24 +8,26 @@
 <EditForm Model="@result" OnValidSubmit="@OnInitializedAsync">
     <DataAnnotationsValidator />
     <ValidationSummary />
-
+    @if (request == null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else{
     <br />
     <td>Data: @request.DayIndisposition</td>
     <InputDate id="change" @bind-Value="result.DayIndisposition" required />
     <br />
-    <td>Zmiana:</td>
+    <td>Zmiana: @Change</td>
     <label>
-        <InputSelect @bind-Value="result.Change">
-            <option value="@request.Change">Wybierz...</option>
+            <InputSelect @bind-Value="result.Change" required>
             <option value="D">Dzień</option>
             <option value="N">Noc</option>
             <option value="A">Cały dzień</option>
         </InputSelect>
     </label>
-    <td>Typ prośby</td>
+    <td>Typ prośby: @TypeRequest</td>
     <label>
-        <InputSelect @bind-Value="result.TypeRequest">
-            <option value="@request.TypeRequest">Wybier...</option>
+            <InputSelect @bind-Value="result.TypeRequest" required>
             <option value="W">Praca</option>
             <option value="H">Wolne</option>
         </InputSelect>
@@ -33,22 +35,34 @@
 
     <br />
     <br />
-    <button type="submit" @onclick="RequestEdit">Zatwierdź zmiany</button>
+        <button type="submit" @onclick="RequestEdit">Zatwierdź zmiany</button>
+        <button type="submit" @onclick="RequestDeleted">Usuń prośbę</button>
 
+    }
 </EditForm>
+
+
 
 
 @code {
     [Parameter]
     public int Id { get; set; }
+    bool Active = true; 
+
+    public string Change { get; set; }
+    public string TypeRequest { get; set; }
 
     RequestModel request = new();
     RequestModel result = new();
+    RequestModel deletedRequest = new();
+
+
 
     protected override async Task OnInitializedAsync()
     {
         base.OnInitialized();
         request = await _requestService.GetRequestById(Id);
+        View();
     }
 
     private async Task RequestEdit()
@@ -56,6 +70,23 @@
         result.Id = Id;
         result.Active = request.Active;
         await _requestService.EditRequest(result);
+    }
+    private async Task RequestDeleted()
+    {
+        deletedRequest.Id = Id;
+        deletedRequest.Active = false;
+        await _requestService.EditRequest(deletedRequest);
+    }
+
+  
+    private void View()
+    {
+        if (request.Change == 'D') Change = "Dzień";
+        else if (request.Change == 'N') Change = "Noc";
+        else Change = "Cały dzień";
+
+        if (request.TypeRequest == 'W') TypeRequest = "Praca";
+        else Change = "Wolne";
     }
 
 }

@@ -2,6 +2,17 @@
 @page "/allRequestById/{id:int}"
 <h3>AllRequestById</h3>
 
-@code {
 
+
+@if(requests == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    
+}
+
+    @code {
+        List<RequestModel> requests = new();
 }

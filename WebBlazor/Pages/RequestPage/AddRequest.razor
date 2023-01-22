@@ -15,18 +15,17 @@
     <br />
     <td>Zmiana: </td>
     <label>
-        <InputSelect @bind-Value="request.Change">
-            <option value="">Wybierz...</option>
+        <InputSelect @bind-Value="request.Change" required>
             <option value="D">Dzień</option>
             <option value="N">Noc</option>
             <option value="A">Cały dzień</option>
         </InputSelect>
+
     </label>
     <br />
     <td>Typ prośby: </td>
     <label>
-        <InputSelect @bind-Value="request.TypeRequest">
-            <option value="">Wybierz...</option>
+        <InputSelect @bind-Value="request.TypeRequest" required>
             <option value="W">Praca</option>
             <option value="H">Wolne</option>
         </InputSelect>
@@ -34,13 +33,14 @@
     <br />
     <br />
     <br />
-    <button type="submit">Submit</button>
+    <button type="submit">Zapisz</button>
 </EditForm>
 
 
 @code {
     RequestModel request = new();
     public DateTime DayIndisposition = DateTime.Now;
+
 
 
     private async Task InsertRequest()

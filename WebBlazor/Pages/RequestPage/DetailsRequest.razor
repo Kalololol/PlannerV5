@@ -7,7 +7,11 @@
 
 
 <h3>Prośba @request.DayIndisposition </h3>
-
+@if (request == null)
+{
+    <p><em>Loading...</em></p>
+}
+else{
 <table class="table">
     <tr>
         <th><a class="nav-link">Data</a></th>
@@ -19,12 +23,13 @@
         <td>@request.DayIndisposition</td>
         <td>@request.Change</td>
         <td>@request.TypeRequest</td>
-        <button class="btn btn-primiary"><a href="@($"/editRequest/{request.Id}")">Edycja</a></button>
+            <button class="btn btn-primiary"><a href="@($"/editRequest/{request.Id}")"><i class="oi oi-pencil"></i></a></button>
 
     </tr>
     <br />
     <a href="@($"/allRequest")">Cofnij</a>
 </table>
+}
 
 @code {
     [Parameter]

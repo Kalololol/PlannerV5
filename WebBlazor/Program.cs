@@ -30,16 +30,19 @@ builder.Services.AddSingleton(AutoMapperConfigurationWebBlazor.Initialize());
 builder.Services.AddHttpClient();
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7205/") });
 
-builder.Services.AddHttpClient<IEmployeeService, EmployeeService>
-    (client =>
-    {
-        client.BaseAddress = new Uri(("https://localhost:7205/"));
-    });
-builder.Services.AddHttpClient<IRequestService, RequestService>
-    (client =>
-    {
-        client.BaseAddress = new Uri(("https://localhost:7205/"));
-    });
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+builder.Services.AddScoped<IRequestService, RequestService>();
+
+//builder.Services.AddHttpClient<IEmployeeService, EmployeeService>
+//    (client =>
+//    {
+//        client.BaseAddress = new Uri(("https://localhost:7205/"));
+//    });
+//builder.Services.AddHttpClient<IRequestService, RequestService>
+//    (client =>
+//    {
+//        client.BaseAddress = new Uri(("https://localhost:7205/"));
+//    });
 
 var app = builder.Build();
 
