@@ -43,8 +43,8 @@ namespace Application.Service.Command
             }
 
             _requestRepository.Update(req);
+            return Task.FromResult(Unit.Value);
 
-            throw new NotImplementedException();
         }
     }
 }

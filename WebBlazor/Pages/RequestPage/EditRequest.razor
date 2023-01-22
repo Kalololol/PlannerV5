@@ -10,16 +10,26 @@
     <ValidationSummary />
 
     <br />
-    <td>Data: @DayIndisposition</td>
-    <InputDate id="change" @bind-Value="DayIndisposition" required />
+    <td>Data: @request.DayIndisposition</td>
+    <InputDate id="change" @bind-Value="result.DayIndisposition" required />
     <br />
-    <td>Zmiana: @Change</td>
-    <InputText id="change" @bind-Value="Change" required />
-    <br />
-    <td>Typ prośby: @TypeRequest</td>
-    <InputText id="typerequest" @bind-Value="TypeRequest" required />
-    <td>Usuń prośbę: </td>
-    <InputCheckbox id="active" @bind-Value="request.Active" required />
+    <td>Zmiana:</td>
+    <label>
+        <InputSelect @bind-Value="result.Change">
+            <option value="@request.Change">Wybierz...</option>
+            <option value="D">Dzień</option>
+            <option value="N">Noc</option>
+            <option value="A">Cały dzień</option>
+        </InputSelect>
+    </label>
+    <td>Typ prośby</td>
+    <label>
+        <InputSelect @bind-Value="result.TypeRequest">
+            <option value="@request.TypeRequest">Wybier...</option>
+            <option value="W">Praca</option>
+            <option value="H">Wolne</option>
+        </InputSelect>
+    </label>
 
     <br />
     <br />
@@ -31,9 +41,6 @@
 @code {
     [Parameter]
     public int Id { get; set; }
-    public string Change { get; set; }
-    public DateTime DayIndisposition { get; set; }
-    public string TypeRequest { get; set; }
 
     RequestModel request = new();
     RequestModel result = new();
@@ -47,6 +54,7 @@
     private async Task RequestEdit()
     {
         result.Id = Id;
+        result.Active = request.Active;
         await _requestService.EditRequest(result);
     }
 

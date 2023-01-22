@@ -33,8 +33,11 @@ namespace Application.Service.Queries
 
             foreach (var i in requests)
             {
-                var req = _mapper.Map<RequestDto>(i);
-                result.Add(req);
+                if (i.Active == true)
+                {
+                    var req = _mapper.Map<RequestDto>(i);
+                    result.Add(req);
+                }
             }
 
             return result;

@@ -15,7 +15,7 @@
     <br />
     <td>Zmiana: </td>
     <label>
-        <InputSelect @bind-Value="Change">
+        <InputSelect @bind-Value="request.Change">
             <option value="">Wybierz...</option>
             <option value="D">Dzień</option>
             <option value="N">Noc</option>
@@ -25,7 +25,7 @@
     <br />
     <td>Typ prośby: </td>
     <label>
-        <InputSelect @bind-Value="TypeRequest">
+        <InputSelect @bind-Value="request.TypeRequest">
             <option value="">Wybierz...</option>
             <option value="W">Praca</option>
             <option value="H">Wolne</option>
@@ -41,11 +41,11 @@
 @code {
     RequestModel request = new();
     public DateTime DayIndisposition = DateTime.Now;
-    public string Change { get; set; }
-    public string TypeRequest { get; set; }
+
 
     private async Task InsertRequest()
     {
+        request.DayIndisposition = DayIndisposition;
         await _requestService.AddRequest(request);
 
     }

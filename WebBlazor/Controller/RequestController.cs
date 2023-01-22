@@ -99,17 +99,17 @@ namespace WebBlazor.Controller
         }
 
         [HttpPost]
-        [Route("editEmployee")]
+        [Route("editRequest")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-        public async Task<ActionResult<EmployeeModel>> EditEmployee(EmployeeModel employee)
+        public async Task<ActionResult<RequestModel>> EditRequest(RequestModel employee)
         {
             try
             {
                 if (employee == null)
                     return BadRequest();
-                await _mediator.Send(_mapper.Map<EditEmployeeCommand>(employee));
+                await _mediator.Send(_mapper.Map<EditRequestCommand>(employee));
 
                 return Ok();
             }

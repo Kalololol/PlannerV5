@@ -20,8 +20,9 @@ namespace Application.Service.Command
         public string PhoneNumber { get; set; }
         public string LicenseNumber { get; set; }
         public string Password { get; set; }
-              
-        public EditEmployeeCommand(int id, string name, string surname, string addressEmail, string phoneNumber, string licenseNumber, string password)
+        public bool Active { get; set; }
+
+        public EditEmployeeCommand(int id, string name, string surname, string addressEmail, string phoneNumber, string licenseNumber, string password, bool active)
         {
             Id = id;
             Name = name;
@@ -30,6 +31,7 @@ namespace Application.Service.Command
             PhoneNumber = phoneNumber;
             LicenseNumber = licenseNumber;
             Password = password;
+            Active = active;
         }
     }
 
@@ -56,6 +58,8 @@ namespace Application.Service.Command
                 employee.PhoneNumber = request.PhoneNumber;
                 employee.LicenseNumber = request.LicenseNumber;
                 employee.Password = request.Password;
+                employee.Active = request.Active;
+
             }
 
             _employeeRepository.Update(employee);
