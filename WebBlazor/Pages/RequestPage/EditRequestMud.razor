@@ -1,0 +1,94 @@
+﻿@page "/editRequest"
+@page "/editRequest/{id:int}"
+@using System.Globalization
+@inject IRequestService _requestService
+@inject IDialogService DialogService
+@inject NavigationManager NavigationManager
+
+
+
+@if (result == null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else{
+    <MudDatePicker Label="Dzień niedostępności" @bind-Date="Day"></MudDatePicker>
+
+    <MudSelect T="string" @bind-Value="@result.Change" Label="Zmiana:" AnchorOrigin="Origin.BottomCenter" Required="true" RequiredError="Pole jest wymagane">
+    <MudSelectItem Value=@("Dzień")>Dzień</MudSelectItem>
+    <MudSelectItem Value="@("Noc")">Noc</MudSelectItem>
+    <MudSelectItem Value="@("Doba")">Cały dzień</MudSelectItem>
+</MudSelect>
+    <MudSelect T="string" @bind-Value="@result.TypeRequest" Label="Typ prośby:" AnchorOrigin="Origin.BottomCenter" Required="true">
+    <MudSelectItem Value=@("Praca")>Praca</MudSelectItem>
+    <MudSelectItem Value="@("Wolne")">Wolne</MudSelectItem>
+</MudSelect>
+<MudButton Variant="Variant.Filled" Color="Color.Success" OnClick="OnButtonClicked">Zapisz</MudButton>
+<MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="OnButtonClickedBack">Cofnij</MudButton>
+}
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    RequestModel request = new();
+    public DateTime DayIndisposition { get; set; }
+    bool success;
+
+    DateTime? Day = DateTime.Today;
+    RequestModel result = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitialized();
+        result = await _requestService.GetRequestById(Id);
+        Day = result.DayIndisposition;
+    }
+
+    private async void OnButtonClicked()
+    {
+        string state = "";
+        if (result.TypeRequest != null && result.Change != null)
+        {
+            bool? result = await DialogService.ShowMessageBox(
+                "Dodawanie nowej prośby",
+                "Czy na pewno chcesz dodać prośbę?",
+                yesText: "TAK-DODAJ!", cancelText: "ANULUJ");
+            state = result == null ? "0" : "1";
+            StateHasChanged();
+            if (result == true)
+            {
+                await RequestEdit();
+                NavigationManager.NavigateTo("/allRequest");
+            }
+        }
+        else
+        {
+            await DialogService.ShowMessageBox(
+               "Niekompletne dane",
+               "Wprowadzone dane nie są kompletne",
+               yesText: "OK");
+            StateHasChanged();
+        }
+    }
+
+    private async void OnButtonClickedBack()
+    {
+        string state = "";
+        bool? result = await DialogService.ShowMessageBox(
+            "Anulowanie zmian",
+            "Czy na pewno chcesz anulować wprowadzone zmiany?",
+            yesText: "TAK-ANULUJ!", cancelText: "COFNIJ");
+        state = result == null ? "0" : "1";
+        StateHasChanged();
+        if (result == true)
+        {
+            NavigationManager.NavigateTo("/allRequest");
+        }
+    }
+    private async Task RequestEdit()
+    {
+        result.Id = Id;
+        result.DayIndisposition = Convert.ToDateTime(Day);
+        await _requestService.EditRequest(result);
+    }
+
+}

@@ -17,9 +17,9 @@
     <td>Zmiana: </td>
     <label>
         <InputSelect @bind-Value="request.Change" required>
-            <option value="D">Dzień</option>
-            <option value="N">Noc</option>
-            <option value="A">Cały dzień</option>
+            <option value="Dzień">Dzień</option>
+            <option value="Noc">Noc</option>
+            <option value="Doba">Doba</option>
         </InputSelect>
 
     </label>
@@ -27,15 +27,15 @@
     <td>Typ prośby: </td>
     <label>
         <InputSelect @bind-Value="request.TypeRequest" required>
-            <option value="W">Praca</option>
-            <option value="H">Wolne</option>
+            <option value="Praca">Praca</option>
+            <option value="Wolne">Wolne</option>
         </InputSelect>
     </label>
     <br />
     <br />
     <br />
     <MudButton Variant="Variant.Filled" Color="Color.Success" OnClick="OnButtonClicked">Zapisz</MudButton>
-    <MudButton Variant="Variant.Filled" Color="Color.Transparent" OnClick="OnButtonClickedBack">Cofnij</MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Transparent" OnClick="OnButtonClickedBack">Anuluj</MudButton>
 
 </EditForm>
 
@@ -44,9 +44,21 @@
     RequestModel request = new();
     public DateTime DayIndisposition = DateTime.Now;
 
-    void OnButtonClickedBack()
+    
+
+    private async void OnButtonClickedBack()
     {
-        NavigationManager.NavigateTo("/allRequest");
+        string state = "";
+        bool? result = await DialogService.ShowMessageBox(
+            "Anulowanie zmian",
+            "Czy na pewno chcesz anulować wprowadzone zmiany?",
+            yesText: "TAK-ANULUJ!", cancelText: "COFNIJ");
+        state = result == null ? "0" : "1";
+        StateHasChanged();
+        if (result == true)
+        {
+            NavigationManager.NavigateTo("/allRequest");
+        }
     }
 
     private async void OnButtonClicked()

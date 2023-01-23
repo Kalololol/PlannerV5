@@ -1,5 +1,5 @@
-﻿@page "/editRequest"
-@page "/editRequest/{id:int}"
+﻿@page "/editRequesttt"
+@page "/editRequesttt/{id:int}"
 @inject IRequestService _requestService
 @inject IDialogService DialogService
 @inject NavigationManager NavigationManager
@@ -101,11 +101,11 @@
   
     private void View()
     {
-        if (request.Change == 'D') Change = "Dzień";
-        else if (request.Change == 'N') Change = "Noc";
+        if (request.Change == "D") Change = "Dzień";
+        else if (request.Change == "N") Change = "Noc";
         else Change = "Cały dzień";
 
-        if (request.TypeRequest == 'W') TypeRequest = "Praca";
+        if (request.TypeRequest == "W") TypeRequest = "Praca";
         else Change = "Wolne";
     }
 

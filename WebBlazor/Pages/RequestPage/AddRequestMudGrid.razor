@@ -1,22 +1,31 @@
 ﻿@page "/addRequestMud"
 @using System.Globalization
-
+@inject IRequestService _requestService
+@inject IDialogService DialogService
+@inject NavigationManager NavigationManager
 
 <h3>Dodaj prośby grafikowe</h3>
 
-<MudSwipeArea OnSwipe="@OnSwipe">
-    <MudDatePicker PickerVariant="PickerVariant.Static" Date="@(DateTime.Today.AddDays(1))" @bind-PickerMonth="@_pickerMonth" />
-</MudSwipeArea>
+@*<MudSwipeArea OnSwipe="@OnSwipe">
+    <MudDatePicker PickerVariant="PickerVariant.Static" Date="@(DateTime.Today.AddDays(1))" @bind-PickerMonth="@_pickerMonth" Required="true" />
+</MudSwipeArea>*@
+<MudDatePicker Label="Dzień niedostępności" @bind-Date="Day"></MudDatePicker>
 
-<MudSelect T="string" @bind-Value="@Change" Label="Zmiana:" AnchorOrigin="Origin.BottomCenter">
-    <MudSelectItem Value=@("D")>Dzień</MudSelectItem>
-    <MudSelectItem Value="@("N")">Noc</MudSelectItem>
-    <MudSelectItem Value="@("A")">Cały dzień</MudSelectItem>
+@*<MudTextField T="string" @bind-Value="employee.Name" Label="Imię" Required="true" RequiredError="Pole Imię jest wymagane!" />
+*@
+<MudSelect T="string" @bind-Value="@request.Change" Label="Zmiana:" AnchorOrigin="Origin.BottomCenter" Required="true" RequiredError="Pole jest wymagane">
+    <MudSelectItem Value=@("Dzień")>Dzień</MudSelectItem>
+    <MudSelectItem Value="@("Noc")">Noc</MudSelectItem>
+    <MudSelectItem Value="@("Doba")">Cały dzień</MudSelectItem>
 </MudSelect>
-<MudSelect T="string" @bind-Value="@TypeRequest" Label="Typ prośby:" AnchorOrigin="Origin.BottomCenter">
-    <MudSelectItem Value=@("W")>Praca</MudSelectItem>
-    <MudSelectItem Value="@("F")">Wolne</MudSelectItem>
+<MudSelect T="string" @bind-Value="@request.TypeRequest" Label="Typ prośby:" AnchorOrigin="Origin.BottomCenter" Required="true">
+    <MudSelectItem Value=@("Praca")>Praca</MudSelectItem>
+    <MudSelectItem Value="@("Wolne")">Wolne</MudSelectItem>
 </MudSelect>
+<MudButton Variant="Variant.Filled" Color="Color.Success" OnClick="OnButtonClicked">Zapisz</MudButton>
+<MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="OnButtonClickedBack">Cofnij</MudButton>
+
+
 
 
 
@@ -26,8 +35,61 @@
     public string Change { get; set; }
     public string TypeRequest { get; set; }
     public DateTime DayIndisposition { get; set; }
+    bool success;
+
+    DateTime? Day = DateTime.Today;
+
 
     DateTime? _pickerMonth = DateTime.Now;
+
+
+    private async void OnButtonClickedBack()
+    {
+        string state = "";
+        bool? result = await DialogService.ShowMessageBox(
+            "Anulowanie zmian",
+            "Czy na pewno chcesz anulować wprowadzone zmiany?",
+            yesText: "TAK-ANULUJ!", cancelText: "COFNIJ");
+        state = result == null ? "0" : "1";
+        StateHasChanged();
+        if (result == true)
+        {
+            NavigationManager.NavigateTo("/allRequest");
+        }
+    }
+
+    private async void OnButtonClicked()
+    {
+        string state = "";
+        if (request.TypeRequest != null && request.Change != null){
+            bool? result = await DialogService.ShowMessageBox(
+                "Dodawanie nowej prośby",
+                "Czy na pewno chcesz dodać prośbę?",
+                yesText: "TAK-DODAJ!", cancelText: "ANULUJ");
+            state = result == null ? "0" : "1";
+            StateHasChanged();
+            if (result == true)
+            {
+                await InsertRequest();
+                NavigationManager.NavigateTo("/allRequest");
+            }}
+        else
+        {
+             await DialogService.ShowMessageBox(
+                "Niekompletne dane",
+                "Wprowadzone dane nie są kompletne",
+                yesText: "OK");
+            StateHasChanged();
+        }
+    }
+    private async Task InsertRequest()
+    {
+        request.DayIndisposition = Convert.ToDateTime(Day);
+        if (Day == null) request.DayIndisposition = DateTime.Now;
+        
+        await _requestService.AddRequest(request);
+
+    }
 
     public void OnSwipe(SwipeDirection direction)
     {
