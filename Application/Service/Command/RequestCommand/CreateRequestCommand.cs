@@ -37,7 +37,8 @@ namespace Application.Service.Command
                 DayIndisposition = request.DayIndisposition,
                 Change = request.Change,
                 TypeRequest = request.TypeRequest,
-                EmployeeId = request.EmployeeId,
+               // EmployeeId = request.EmployeeId,
+               EmployeeId = 1,
                 Active = true
             };
             var result = _mapper.Map<Request>(req);

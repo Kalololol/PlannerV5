@@ -32,6 +32,7 @@ namespace WebBlazor.Controller
                 List<RequestModel> result = new List<RequestModel>();
                 var requests = await _mediator.Send(new GetRequestsQuery());
 
+
                 if (requests == null) return NotFound();
                 else
                 {

@@ -1,0 +1,60 @@
+﻿@page "/allRequest1"
+@inject IRequestService _requestService
+@inject IEmployeeService _employeeService 
+@inject NavigationManager NavigationManager
+
+
+<div>
+<h3>Prośby grafikowe</h3>
+<MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="OnButtonClickedBack">Dodaj nową prośbę</MudButton>
+</div>
+@if(requests == null)
+{
+    <p><em>Loading...</em></p>
+}
+else {
+    <MudTable Items="@requests" Hover="true" SortLabel="Sort By">
+    <HeaderContent>
+          @*  <MudTh><MudTableSortLabel SortBy="new Func<Element, object>(x=>x.DayIndisposition)">Dzień niedostępności</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<Element, object>(x=>x.Change)">Zmiana</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<Element, object>(x=>x.TypeRequest)">Typ prośby</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<Element, object>(x=>x.EmployeeName)">Pracownik</MudTableSortLabel></MudTh>*@
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Dzień niedostępności">@context.DayIndisposition</MudTd>
+        <MudTd DataLabel="Zmiana">@context.Change</MudTd>
+        <MudTd DataLabel="Typ prośby">@context.TypeRequest</MudTd>
+        <MudTd DataLabel="Pracownik">@context.EmployeeName</MudTd>
+    </RowTemplate>
+</MudTable>
+}
+
+@code {
+      List<RequestModel> requests = new();
+    List<EmployeeModel> employees = new();
+    string date;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        requests = await _requestService.GetRequests();
+        employees = await _employeeService.GetEmployees();
+        foreach (var r in requests)
+        {
+            var input = employees.SingleOrDefault(x => x.Id == r.EmployeeId);
+            if (input.Surname == null) r.EmployeeName = "brak przypisania";
+            else r.EmployeeName = input.Surname;
+            
+        }
+    }
+    void OnButtonClickedBack()
+    {
+        NavigationManager.NavigateTo("/addRequestMud");
+    }
+
+    private async void View()
+    {
+        
+    }
+}

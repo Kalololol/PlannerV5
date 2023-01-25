@@ -1,6 +1,7 @@
 ﻿@page "/detailsRequest"
 @page "/detailsRequest/{id:int}"
 @inject IRequestService _requestService
+@inject IEmployeeService _employeeService
 @inject NavigationManager NavigationManager
 
 
@@ -30,6 +31,7 @@ else{
     <br />
         <MudButton Variant="Variant.Filled" Color="Color.Transparent" OnClick="OnButtonClickedBack">Cofnij</MudButton>
     </table>
+
 }
 
 @code {
@@ -37,6 +39,7 @@ else{
     public int Id { get; set; }
 
     RequestModel request = new();
+    List<EmployeeModel> requests = new List<EmployeeModel>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -47,5 +50,6 @@ else{
     {
         NavigationManager.NavigateTo("/allRequest");
     }
+    
 }
 
