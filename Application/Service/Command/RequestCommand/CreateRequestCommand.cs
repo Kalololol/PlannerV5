@@ -17,28 +17,33 @@ namespace Application.Service.Command
         public string Change { get; set; } //D-Day, N-Night, A-AllDay
         public string TypeRequest { get; set; } // W-Work, H-Holiday
         public int EmployeeId { get; set; }
+
     }
 
     public class CreateRequestCommandHandler : IRequestHandler<CreateRequestCommand, Unit>
     {
         private readonly IRepository<Request> _requestRepository;
+        private readonly IRepository<Employee> _employeeRepository;
+
         private readonly IMapper _mapper;
 
-        public CreateRequestCommandHandler(IRepository<Request> requestRepository, IMapper mapper)
+        public CreateRequestCommandHandler(IRepository<Request> requestRepository, IRepository<Employee> employeeRepository, IMapper mapper)
         {
             _requestRepository = requestRepository;
+            _employeeRepository = employeeRepository;
             _mapper = mapper;
         }
 
         public Task<Unit> Handle(CreateRequestCommand request, CancellationToken cancellationToken)
         {
+            var employee = _employeeRepository.GetById(1); // tutaj wrzucic employeeId zalogowanego usera
             var req = new RequestDto()
             {
                 DayIndisposition = request.DayIndisposition,
                 Change = request.Change,
                 TypeRequest = request.TypeRequest,
-               // EmployeeId = request.EmployeeId,
-               EmployeeId = 1,
+                EmployeeName = employee.Surname + " " + employee.Name,   
+                EmployeeId = 1, // tutaj wrzucic id zalogowanego usera
                 Active = true
             };
             var result = _mapper.Map<Request>(req);

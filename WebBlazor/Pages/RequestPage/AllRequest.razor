@@ -1,6 +1,5 @@
 ﻿@page "/allRequest"
 @inject IRequestService _requestService
-@inject IEmployeeService _employeeService
 @inject NavigationManager NavigationManager
 
 
@@ -30,7 +29,7 @@ else
                     <td>@r.DayIndisposition</td>
                     <td>@r.Change</td>
                     <td>@r.TypeRequest</td>
-                   @* <td>@r.EmployeeName</td>*@
+                    <td>@r.EmployeeName</td>
                     <button class="btn btn-primiary"><a href="@($"/detailsRequest/{r.Id}")"><i class="oi oi-document"></i></a></button>
                     <button class="btn btn-primiary"><a href="@($"/editRequest/{r.Id}")"><i class="oi oi-pencil"></i></a></button>
 
@@ -51,15 +50,7 @@ else
     {
         await base.OnInitializedAsync();
         requests = await _requestService.GetRequests();
-        employees = await _employeeService.GetEmployees();
-        //foreach (var r in requests)
-        //{
-        //    var input = employees.SingleOrDefault(x => x.Id == r.EmployeeId);
-        //    if (input.Surname == null) r.EmployeeName = "brak przypisania";
-        //    else r.EmployeeName = input.Surname;
-
-
-        //}
+      
     }
     void OnButtonClickedBack()
     {
@@ -70,5 +61,6 @@ else
     {
 
     }
+        
 
 }
