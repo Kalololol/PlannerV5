@@ -86,6 +86,7 @@
     {
         request.DayIndisposition = Convert.ToDateTime(Day);
         if (Day == null) request.DayIndisposition = DateTime.Now;
+
         
         await _requestService.AddRequest(request);
 

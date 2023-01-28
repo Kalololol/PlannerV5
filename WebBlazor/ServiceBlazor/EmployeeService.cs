@@ -59,10 +59,6 @@ namespace WebBlazor.ServiceBlazor
                 var response = await httpClient.PostAsJsonAsync("api/employee/editEmployee", employee);
                 if (response.IsSuccessStatusCode)
                 {
-                    /*if (response.StatusCode == HttpStatusCode.NoContent)
-                    {
-                        return default(EmployeeModel);
-                    }*/
                     return employee;
                 }
                 else
@@ -81,13 +77,9 @@ namespace WebBlazor.ServiceBlazor
         {
             try
             {
-                var response = await httpClient.PostAsJsonAsync("api/employee/deleteEmployeeById", employee);
+                var response = await httpClient.PostAsJsonAsync("api/employee/deleteEmployee", employee);
                 if (response.IsSuccessStatusCode)
                 {
-                    /*if (response.StatusCode == HttpStatusCode.NoContent)
-                    {
-                        return default(EmployeeModel);
-                    }*/
                     return employee;
                 }
                 else
@@ -100,7 +92,7 @@ namespace WebBlazor.ServiceBlazor
             {
                 throw;
             }
-}
+        }
 
 
     }

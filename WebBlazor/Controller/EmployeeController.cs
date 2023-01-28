@@ -2,10 +2,8 @@
 using Application.Service.Queries;
 using AutoMapper;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebBlazor.ModelWebBlazor;
-using WebBlazor.Pages.EmployeePage;
 
 namespace WebBlazor.Controller
 {
@@ -130,7 +128,7 @@ namespace WebBlazor.Controller
             {
                 if (employee == null)
                     return BadRequest();
-                await _mediator.Send(_mapper.Map<EditEmployeeCommand>(employee));
+                await _mediator.Send(_mapper.Map<DeleteEmployeeCommand>(employee));
 
                 return Ok();
             }

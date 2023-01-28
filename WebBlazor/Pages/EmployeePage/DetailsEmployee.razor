@@ -1,6 +1,7 @@
 ﻿@page "/detailsEmployee"
 @page "/detailsEmployee/{id:int}"
 @inject IEmployeeService _employeeService
+@inject IRequestService _requestService 
 @inject IDialogService DialogService
 @inject NavigationManager NavigationManager
 
@@ -49,7 +50,8 @@
     {
         employee.Id = Id;
         employee.Active = false;
-        await _employeeService.EditEmployee(employee);
+        await _employeeService.DeleteEmployee(employee);
+        
     }
     private async void OnButtonClicked()
     {

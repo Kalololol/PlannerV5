@@ -24,8 +24,8 @@ else {
         <MudTd DataLabel="Dzień niedostępności">@context.DayIndisposition</MudTd>
         <MudTd DataLabel="Zmiana">@context.Change</MudTd>
         <MudTd DataLabel="Typ prośby">@context.TypeRequest</MudTd>
-        <MudTd DataLabel="Pracownik">@context.EmployeeName</MudTd>
-    </RowTemplate>
+@*        <MudTd DataLabel="Pracownik">@context.EmployeeName</MudTd>
+*@    </RowTemplate>
 </MudTable>
 }
 
@@ -39,14 +39,14 @@ else {
     {
         await base.OnInitializedAsync();
         requests = await _requestService.GetRequests();
-        employees = await _employeeService.GetEmployees();
-        foreach (var r in requests)
-        {
-            var input = employees.SingleOrDefault(x => x.Id == r.EmployeeId);
-            if (input.Surname == null) r.EmployeeName = "brak przypisania";
-            else r.EmployeeName = input.Surname;
+        //employees = await _employeeService.GetEmployees();
+        //foreach (var r in requests)
+        //{
+        //    var input = employees.SingleOrDefault(x => x.Id == r.EmployeeId);
+        //    if (input.Surname == null) r.EmployeeName = "brak przypisania";
+        //    else r.EmployeeName = input.Surname;
             
-        }
+        //}
     }
     void OnButtonClickedBack()
     {

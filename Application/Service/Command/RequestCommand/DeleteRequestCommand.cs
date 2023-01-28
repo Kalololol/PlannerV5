@@ -2,11 +2,7 @@
 using Data.Repositories;
 using Domain;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Application.Service.Command
 {
@@ -31,7 +27,8 @@ namespace Application.Service.Command
 
             if (req != null)
             {
-                _requestRepository.Delete(req);
+                req.Active = false;
+                _requestRepository.Update(req);
             }
 
             return Task.FromResult(Unit.Value);

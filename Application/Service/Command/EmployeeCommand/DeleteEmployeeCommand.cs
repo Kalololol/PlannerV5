@@ -18,10 +18,13 @@ namespace Application.Service.Command
     public class DeleteEmployeeCommandHandler : IRequestHandler<DeleteEmployeeCommand, Unit>
     {
         private readonly IRepository<Employee> _employeeRepository;
+        private readonly IRepository<Request> _requestRepository;
 
-        public DeleteEmployeeCommandHandler(IRepository<Employee> employeeRepository)
+
+        public DeleteEmployeeCommandHandler(IRepository<Employee> employeeRepository, IRepository<Request> requestRepository)
         {
             _employeeRepository = employeeRepository;
+            _requestRepository = requestRepository;
         }
 
         public Task<Unit> Handle(DeleteEmployeeCommand request, CancellationToken cancellationToken)
@@ -33,6 +36,13 @@ namespace Application.Service.Command
             {
                 employee.Active = false;
                 _employeeRepository.Update(employee);
+            }
+
+            var allRequest = _requestRepository.GetAll().ToList();
+            foreach (var ar in allRequest)
+            {
+                ar.Active = false;
+                if (ar.EmployeeId == request.Id) _requestRepository.Update(ar);
             }
 
             return Task.FromResult(Unit.Value);

@@ -3,6 +3,7 @@
 @inject IRequestService _requestService
 @inject IEmployeeService _employeeService
 @inject NavigationManager NavigationManager
+@inject IDialogService DialogService
 
 
 <h3>DetailsRequest</h3>
@@ -29,7 +30,10 @@ else{
 
     </tr>
     <br />
+        <MudButton Variant="Variant.Outlined" Color="Color.Error" OnClick="OnButtonClickedDeleted">Usuń</MudButton>
+
         <MudButton Variant="Variant.Filled" Color="Color.Transparent" OnClick="OnButtonClickedBack">Cofnij</MudButton>
+
     </table>
 
 }
@@ -50,6 +54,28 @@ else{
     {
         NavigationManager.NavigateTo("/allRequest");
     }
-    
+
+    private async Task RequestDeleted()
+    {
+        request.Id = Id;
+        request.Active = false;
+        await _requestService.EditRequest(request);
+
+    }
+    private async void OnButtonClickedDeleted()
+    {
+        string state = "";
+        bool? result = await DialogService.ShowMessageBox(
+            "Usuwasz obiekt",
+            "Czy na pewno chcesz usunąć?",
+            yesText: "TAK-USUŃ!", cancelText: "ANULUJ");
+        state = result == null ? "0" : "1";
+        StateHasChanged();
+        if (result == true)
+        {
+            await RequestDeleted();
+            NavigationManager.NavigateTo("/allRequest");
+        }
+    }
 }
 

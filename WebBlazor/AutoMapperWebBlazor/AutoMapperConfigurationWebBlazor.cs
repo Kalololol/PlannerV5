@@ -24,6 +24,7 @@ namespace WebBlazor.AutoMapperWebBlazor
                cfg.CreateMap<RequestDto, RequestModel>().ReverseMap();
                cfg.CreateMap<RequestModel, CreateRequestCommand>().ReverseMap();
                cfg.CreateMap<RequestModel, EditRequestCommand>().ReverseMap();
+               cfg.CreateMap<EmployeeModel, DeleteEmployeeCommand>().ReverseMap();
 
 
 

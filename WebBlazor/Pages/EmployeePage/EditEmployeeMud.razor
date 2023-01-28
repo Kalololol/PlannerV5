@@ -74,9 +74,24 @@
             yesText: "TAK-ZMIEŃ!", cancelText: "ANULUJ");
         state = result == null ? "0" : "1";
         StateHasChanged();
-        if (result == true) {
-            await EditEmployee();
-            NavigationManager.NavigateTo($"/detailsEmployee/{Id}");
+        if (employee.Name == null || employee.Surname == null || employee.LicenseNumber == null || employee.PhoneNumber == null || employee.AddressEmail == null)
+        {
+            string stateValid = "";
+            bool? resultValid = await DialogService.ShowMessageBox(
+            "Wprowadzone dane są błędne.",
+            "Należy poprawnie wprowadzić wszystkie dane.",
+            yesText: "OK!", cancelText: "POWRÓT");
+            stateValid = resultValid == null ? "0" : "1";
+            StateHasChanged();
+            if (resultValid == null) NavigationManager.NavigateTo($"/detailsEmployee/{Id}");
+        }
+        else
+        {
+            if (result == true)
+            {
+                await EditEmployee();
+                NavigationManager.NavigateTo($"/detailsEmployee/{Id}");
+            }
         }
     }
     void OnButtonClickedDetails()

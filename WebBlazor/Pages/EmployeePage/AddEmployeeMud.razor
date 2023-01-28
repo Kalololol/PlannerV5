@@ -3,6 +3,8 @@
 @using System.Text.RegularExpressions
 @using System.ComponentModel.DataAnnotations
 @inject NavigationManager NavigationManager
+@inject IDialogService DialogService
+
 
 <h3>Dodawanie nowego pracownika</h3>
 <MudGrid>
@@ -84,8 +86,23 @@
     }
     private async Task AddEmployee()
     {
-        await _employeeService.AddEmployee(employee);
-        NavigationManager.NavigateTo("/allEmployees");
+        if (employee.Name == null || employee.Surname == null || employee.LicenseNumber == null || employee.PhoneNumber == null || employee.AddressEmail == null)
+        {
+            string state = "";
+            bool? result = await DialogService.ShowMessageBox(
+            "Wprowadzone dane są błędne.",
+            "Należy poprawnie wprowadzić wszystkie dane.",
+            yesText: "OK!", cancelText: "POWRÓT");
+            state = result == null ? "0" : "1";
+            StateHasChanged();
+            if (result == null) NavigationManager.NavigateTo("/allEmployees");
+
+
+        }
+        else {
+                    await _employeeService.AddEmployee(employee);
+                    NavigationManager.NavigateTo("/allEmployees");
+                }
     }
     void OnButtonClickedBack()
     {
