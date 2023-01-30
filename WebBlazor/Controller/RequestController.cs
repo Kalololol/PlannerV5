@@ -38,6 +38,7 @@ namespace WebBlazor.Controller
                 {
                     foreach (var r in requests)
                     {
+                        r.DayIndisposition.ToShortDateString();
                         var request = _mapper.Map<RequestModel>(r);
                         result.Add(request);
                     }
@@ -50,6 +51,35 @@ namespace WebBlazor.Controller
                 return StatusCode(StatusCodes.Status500InternalServerError, "Brak odpowiedzi z bazy, błąd 500");
             }
         }
+     /*   [HttpGet("{id:int}")]
+        [Route("getAllRequestsByEmployee/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<IList<RequestModel>>> GetAllRequestsByEmployee(int id)
+        {
+            try
+            {
+                List<RequestModel> result = new List<RequestModel>();
+                var requests = await _mediator.Send(new GetAllRequestsByEmployeeQuery(id));
+
+
+                if (requests == null) return NotFound();
+                else
+                {
+                    foreach (var r in requests)
+                    {
+                        var request = _mapper.Map<RequestModel>(r);
+                        result.Add(request);
+                    }
+                    return Ok(result);
+                }
+
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Brak odpowiedzi z bazy, błąd 500");
+            }
+        }*/
 
         [HttpGet("{id:int}")]
         [Route("getRequestById/{id}")]

@@ -41,8 +41,11 @@ namespace Application.Service.Command
             var allRequest = _requestRepository.GetAll().ToList();
             foreach (var ar in allRequest)
             {
-                ar.Active = false;
-                if (ar.EmployeeId == request.Id) _requestRepository.Update(ar);
+                if (ar.EmployeeId == request.Id)
+                {
+                    ar.Active = false;
+                    _requestRepository.Update(ar);
+                }
             }
 
             return Task.FromResult(Unit.Value);

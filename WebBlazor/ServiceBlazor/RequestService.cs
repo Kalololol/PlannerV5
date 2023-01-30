@@ -18,6 +18,12 @@ namespace WebBlazor.ServiceBlazor
         {
             return await httpClient.GetFromJsonAsync<RequestModel>($"api/request/getRequestById/{id}");
         }
+/*        public async Task<RequestModel> GetAllRequestsByEmployee(int id)
+        {
+            return await httpClient.GetFromJsonAsync<List<RequestModel>>($"api/request/getAllRequestsByEmployee/{id}");
+
+        }*/
+
         public async Task<RequestModel> AddRequest(RequestModel request)
         {
             try

@@ -6,6 +6,8 @@ namespace WebBlazor.ServiceBlazor
     {
         Task<List<RequestModel>> GetRequests();
         Task<RequestModel> GetRequestById(int id);
+     //   Task<RequestModel> GetAllRequestsByEmployee(int id);
+
         Task<RequestModel> AddRequest(RequestModel request);
         Task<RequestModel> EditRequest(RequestModel request);
         //Task<RequestModel> DeleteEmployee(EmployeeModel employee);

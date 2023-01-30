@@ -6,22 +6,23 @@
 
 <h3>Dodaj prośby grafikowe</h3>
 
-@*<MudSwipeArea OnSwipe="@OnSwipe">
-    <MudDatePicker PickerVariant="PickerVariant.Static" Date="@(DateTime.Today.AddDays(1))" @bind-PickerMonth="@_pickerMonth" Required="true" />
-</MudSwipeArea>*@
+     
+   
 <MudDatePicker Label="Dzień niedostępności" @bind-Date="Day"></MudDatePicker>
 
-@*<MudTextField T="string" @bind-Value="employee.Name" Label="Imię" Required="true" RequiredError="Pole Imię jest wymagane!" />
-*@
 <MudSelect T="string" @bind-Value="@request.Change" Label="Zmiana:" AnchorOrigin="Origin.BottomCenter" Required="true" RequiredError="Pole jest wymagane">
     <MudSelectItem Value=@("Dzień")>Dzień</MudSelectItem>
     <MudSelectItem Value="@("Noc")">Noc</MudSelectItem>
     <MudSelectItem Value="@("Doba")">Cały dzień</MudSelectItem>
 </MudSelect>
+
+    <tbody>
 <MudSelect T="string" @bind-Value="@request.TypeRequest" Label="Typ prośby:" AnchorOrigin="Origin.BottomCenter" Required="true">
     <MudSelectItem Value=@("Praca")>Praca</MudSelectItem>
     <MudSelectItem Value="@("Wolne")">Wolne</MudSelectItem>
 </MudSelect>
+</tbody>
+
 <MudButton Variant="Variant.Filled" Color="Color.Success" OnClick="OnButtonClicked">Zapisz</MudButton>
 <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="OnButtonClickedBack">Cofnij</MudButton>
 
@@ -84,7 +85,7 @@
     }
     private async Task InsertRequest()
     {
-        request.DayIndisposition = Convert.ToDateTime(Day);
+        request.DayIndisposition = (Convert.ToDateTime(Day));
         if (Day == null) request.DayIndisposition = DateTime.Now;
 
         

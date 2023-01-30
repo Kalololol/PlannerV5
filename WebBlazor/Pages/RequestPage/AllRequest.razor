@@ -1,66 +1,39 @@
 ﻿@page "/allRequest"
 @inject IRequestService _requestService
-@inject NavigationManager NavigationManager
-
 
 <div>
-    <h3>Prośby grafikowe</h3>
-    <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="OnButtonClickedBack">Dodaj nową prośbę</MudButton>
+    <h3>Prośby grafikowe - @data.ToShortDateString() </h3>
 </div>
-@if (requests == null)
+@if (Elements == null)
 {
     <p><em>Loading...</em></p>
 }
-else
-{
-    <p>
-        <table class="table">
-            <tr>
-                <th><a class="nav-link">Dzień niedostępności</a></th>
-                <th><a class="nav-link">Zmiana</a></th>
-                <th><a class="nav-link">Typ prośby</a></th>
-                <th><a class="nav-link">Pracownik</a></th>
-            </tr>
-
-
-            @foreach (var r in requests)
-            {
-                <tr>
-                    <td>@r.DayIndisposition</td>
-                    <td>@r.Change</td>
-                    <td>@r.TypeRequest</td>
-                    <td>@r.EmployeeName</td>
-                    <button class="btn btn-primiary"><a href="@($"/detailsRequest/{r.Id}")"><i class="oi oi-document"></i></a></button>
-                    <button class="btn btn-primiary"><a href="@($"/editRequest/{r.Id}")"><i class="oi oi-pencil"></i></a></button>
-
-                </tr>
-            }
-            <br />
-        </table>
-    </p>
+else{
+<MudDataGrid T="RequestModel" Items="@Elements" Filterable="true" FilterMode="@DataGridFilterMode.Simple">
+    <Columns>            
+            <Column T="RequestModel" Field="DayIndisposition" Title="Data" />
+        <Column T="RequestModel" Field="TypeRequest" Title="Typ prośby"/>
+        <Column T="RequestModel" Field="Change" Title="Zmiana"/>
+        <Column T="RequestModel" Field="EmployeeName" Title="Pracownik"/>
+    </Columns>
+</MudDataGrid>
 }
 
+
 @code {
-    List<RequestModel> requests = new();
-    List<EmployeeModel> employees = new();
-
-
+    IEnumerable<RequestModel> Elements = new List<RequestModel>();
+    bool _filterOpen = false;
+    DateTime data = DateTime.Now;
+    
 
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
-        requests = await _requestService.GetRequests();
-      
+        Elements = await _requestService.GetRequests();
+
     }
-    void OnButtonClickedBack()
+
+    void OpenFilter()
     {
-        NavigationManager.NavigateTo("/addRequestMud");
+        _filterOpen = true;
     }
-
-    private async void View()
-    {
-
-    }
-        
-
 }
