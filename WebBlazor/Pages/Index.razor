@@ -1,4 +1,4 @@
-﻿@page "/"
+﻿@page "/menu"
 @using Syncfusion.Blazor.Grids
 @inject IEmployeeService _employeeService
 
@@ -46,7 +46,7 @@ else {
     {
         base.OnInitialized();
 
-        employees = await _employeeService.GetEmployees();
+       // employees = await _employeeService.GetEmployees();
                 
     }
 

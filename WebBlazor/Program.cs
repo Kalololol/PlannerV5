@@ -1,10 +1,14 @@
+global using Microsoft.AspNetCore.Components.Authorization;
 using Application;
 using Data.Context;
 using Data.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using MudBlazor.Services;
 using System.Reflection;
+using System.Text;
+using WebBlazor;
 using WebBlazor.AutoMapperWebBlazor;
 using WebBlazor.ServiceBlazor;
 
@@ -28,6 +32,32 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https:/
 
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IRequestService, RequestService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
+//builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
+builder.Services.AddAuthorizationCore();
+
+
+var authenticationSettings = new AuthenticationSettings();
+builder.Configuration.GetSection("Authentication").Bind(authenticationSettings);
+builder.Services.AddSingleton(authenticationSettings);
+builder.Services.AddAuthentication(option =>
+{
+    option.DefaultAuthenticateScheme = "Bearer";
+    option.DefaultScheme = "Bearer";
+    option.DefaultChallengeScheme = "Bearer";
+}).AddJwtBearer(cfg =>
+{
+    cfg.RequireHttpsMetadata = false;
+    cfg.SaveToken = true;
+    cfg.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidIssuer = authenticationSettings.JwtIssuer,
+        ValidAudience = authenticationSettings.JwtIssuer,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtIssuer)),
+    };
+});
+
+
 
 //builder.Services.AddHttpClient<IEmployeeService, EmployeeService>
 //    (client =>
@@ -50,13 +80,17 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
+    app.UseSwagger();
 }
 
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 
 app.UseRouting();
+
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");

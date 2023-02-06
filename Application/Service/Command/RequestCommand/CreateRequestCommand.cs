@@ -42,8 +42,8 @@ namespace Application.Service.Command
                 DayIndisposition = request.DayIndisposition,
                 Change = request.Change,
                 TypeRequest = request.TypeRequest,
-                EmployeeName = employee.Surname + " " + employee.Name,   
-                EmployeeId = 1, // tutaj wrzucic id zalogowanego usera
+                EmployeeName = employee.Surname + " " + employee.Name,
+                EmployeeId = 1,//request.EmployeeId, // tutaj wrzucic id zalogowanego usera;
                 Active = true
             };
             var result = _mapper.Map<Request>(req);

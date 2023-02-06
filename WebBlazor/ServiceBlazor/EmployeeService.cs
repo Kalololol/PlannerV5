@@ -1,4 +1,4 @@
-﻿using Azure;
+﻿using Domain;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net;
@@ -25,8 +25,7 @@ namespace WebBlazor.ServiceBlazor
         {
             return await httpClient.GetFromJsonAsync<EmployeeModel>($"api/employee/getEmployeeById/{id}");
         }
-        //https://github.com/GavinLonDigital/ShopOnlineSolution/blob/main/ShopOnline.Web/Services/ShoppingCartService.cs
-
+       
         public async Task<EmployeeModel> AddEmployee(EmployeeModel employee)
         {
             try
@@ -93,7 +92,23 @@ namespace WebBlazor.ServiceBlazor
                 throw;
             }
         }
-
-
+/*        public async Task<string> Login(LoginModel login)
+        {
+            var response = await httpClient.PostAsJsonAsync<LoginModel>($"api/account/login", login);
+            if (response.IsSuccessStatusCode)
+            {
+                return employee;
+            }
+            else
+            {
+                var message = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Http status:{response.StatusCode} Message -{message}");
+            }
+        }
+            catch (Exception)
+            {
+                throw;
+            }
+}*/
     }
 }

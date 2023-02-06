@@ -1,6 +1,8 @@
 ﻿@page "/allRequest"
 @inject IRequestService _requestService
 
+<AuthorizeView>
+    <Authorized>
 <div>
     <h3>Prośby grafikowe - @data.ToShortDateString() </h3>
 </div>
@@ -18,7 +20,11 @@ else{
     </Columns>
 </MudDataGrid>
 }
-
+    </Authorized>
+    <NotAuthorized>
+        <p>Dostęp tylko dla zalogowanych</p>
+    </NotAuthorized>
+</AuthorizeView>
 
 @code {
     IEnumerable<RequestModel> Elements = new List<RequestModel>();

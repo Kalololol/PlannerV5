@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Application.Mapping
 {
-    public class AutoMapperConfiguration : Profile
+   /* public class AutoMapperConfiguration : Profile
     {
         public static IMapper Initialize()
            => new MapperConfiguration(cfg =>
@@ -21,5 +21,5 @@ namespace Application.Mapping
                cfg.CreateMap<Request, RequestDto>().ReverseMap();
 
            }).CreateMapper();
-    }
+    }*/
 }

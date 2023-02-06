@@ -6,8 +6,9 @@
 @inject NavigationManager NavigationManager
 @inject IDialogService DialogService
 
+<AuthorizeView Roles="Manager">
+    <Authorized>
 <h3>EditEmployeeMud</h3>
-
 <MudGrid>
     <MudItem xs="12" sm="7">
         <MudPaper Class="pa-4">
@@ -30,7 +31,6 @@
             <MudButton Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="@(()=>form.Reset())" Class="mx-2">Wyczyść formularz</MudButton>
             <MudButton Variant="Variant.Filled" DisableElevation="true" OnClick="@(()=>form.ResetValidation())">Wyczyść błędy</MudButton>
             <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="OnButtonClickedDetails" >Cofnij</MudButton>
-
         </MudPaper>
     </MudItem>
     <MudItem xs="12" sm="5">
@@ -43,6 +43,11 @@
         </MudPaper>
     </MudItem>
 </MudGrid>
+    </Authorized>
+    <NotAuthorized>
+        <p>Dostęp tylko dla zalgowanych</p>
+    </NotAuthorized>
+</AuthorizeView>
 
 
 @code {

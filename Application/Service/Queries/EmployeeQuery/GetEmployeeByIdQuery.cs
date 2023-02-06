@@ -32,13 +32,12 @@ namespace Application.Service.Queries
             _mapper = mapper;
         }
 
-        public async Task<EmployeeDto> Handle(GetEmployeeByIdQuery request, CancellationToken cancellationToken)
+        public Task<EmployeeDto> Handle(GetEmployeeByIdQuery request, CancellationToken cancellationToken)
         {
             var employee = _employeRepository.GetById(request.Id);
             var result = _mapper.Map<EmployeeDto>(employee);
 
-
-            return result;
+            return Task.FromResult(result);
         }
     }
     }

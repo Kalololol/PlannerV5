@@ -1,0 +1,51 @@
+﻿@page "/"
+@inject IAccountService _accountService
+@inject NavigationManager NavigationManager
+@inject IDialogService DialogService
+
+
+<h3>LoginPage</h3>
+
+        <EditForm Model="@login">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <body>
+        <td>Email: </td>
+        <InputText id="name" @bind-Value="login.Email" required />
+        <br />
+        <td>Hasło: </td>
+        <InputText id="surname" @bind-Value="login.Password" required />
+        <br />
+                </body>
+
+</EditForm>
+<MudButton Variant="Variant.Filled" Color="Color.Success" @onclick="OnButtonClickedLogin">Zaloguj</MudButton>
+
+
+
+@code {
+    LoginModel login = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitializedAsync();
+    }
+
+    private async void OnButtonClickedLogin()
+    {
+        if(login.Email == null && login.Password == null)
+        {
+            bool? result = await DialogService.ShowMessageBox(
+                "Logowanie do konta",
+                "Wprowadzone dane są błędne.",
+                yesText: "OK");
+            StateHasChanged();
+        }
+        else
+        {
+            await _accountService.Login(login);
+            
+        }
+    }
+
+}

@@ -2,10 +2,12 @@
 @inject IRequestService _requestService
 @inject IEmployeeService _employeeService 
 @inject NavigationManager NavigationManager
-
-
+@*
+<AuthorizeView>
+    <Authorized>
 <div>
 <h3>Prośby grafikowe</h3>
+
 <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="OnButtonClickedBack">Dodaj nową prośbę</MudButton>
 </div>
 @if(requests == null)
@@ -20,7 +22,7 @@ else {
             <MudTh>Typ prośby</MudTh>
             <MudTh>Pracownik</MudTh>
     </HeaderContent>
-    <RowTemplate>
+    <RowTemplate >
             <MudTd DataLabel="Dzień niedostępności">@context.DayIndisposition.ToShortDateString()</MudTd>
         <MudTd DataLabel="Zmiana">@context.Change</MudTd>
         <MudTd DataLabel="Typ prośby">@context.TypeRequest</MudTd>
@@ -28,6 +30,11 @@ else {
     </RowTemplate>
 </MudTable>
 }
+    </Authorized>
+    <NotAuthorized>
+        <p>Dostęp tylko dla zalgowanych</p>
+    </NotAuthorized>
+</AuthorizeView>*@
 
 @code {
       List<RequestModel> requests = new();

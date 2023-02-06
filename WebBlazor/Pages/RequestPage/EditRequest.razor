@@ -3,11 +3,11 @@
 @inject IRequestService _requestService
 @inject IDialogService DialogService
 @inject NavigationManager NavigationManager
+@*
 
-
-
+<AuthorizeView>
+    <Authorized>
 <h3>EditRequest</h3>
-
 <EditForm Model="@result" OnValidSubmit="@OnInitializedAsync">
     <DataAnnotationsValidator />
     <ValidationSummary />
@@ -35,19 +35,18 @@
             <option value="H">Wolne</option>
         </InputSelect>
     </label>
-
     <br />
     <br />
         <button type="submit" @onclick="RequestEdit">Zatwierdź zmiany</button>
-
         <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="OnButtonClicked">Delete</MudButton>
-
     }
 </EditForm>
-
-
-
-
+    </Authorized>
+    <NotAuthorized>
+        <p>Dostęp tylko dla zalgowanych</p>
+    </NotAuthorized>
+</AuthorizeView>
+*@
 @code {
 
     private async void OnButtonClicked()

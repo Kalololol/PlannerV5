@@ -10,8 +10,9 @@ namespace Data.Context
         {
         }
 
-        DbSet<Employee> Employees { get; set; }
-        DbSet<Request> Requests { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+        public DbSet<Request> Requests { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

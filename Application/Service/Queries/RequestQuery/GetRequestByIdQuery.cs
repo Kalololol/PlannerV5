@@ -32,12 +32,12 @@ namespace Application.Service.Queries
             _mapper = mapper;
         }
 
-        public async Task<RequestDto> Handle(GetRequestByIdQuery request, CancellationToken cancellationToken)
+        public Task<RequestDto> Handle(GetRequestByIdQuery request, CancellationToken cancellationToken)
         {
             var req = _requestRepository.GetById(request.Id);
             var result = _mapper.Map<RequestDto>(req);
 
-            return result;
+            return Task.FromResult(result);
         }
     }
 }

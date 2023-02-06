@@ -26,7 +26,7 @@ namespace Application.Service.Queries
             _mapper = mapper;
         }
 
-        public async Task<List<EmployeeDto>> Handle(GetEmployeesQuery request, CancellationToken cancellationToken)
+        public Task<List<EmployeeDto>> Handle(GetEmployeesQuery request, CancellationToken cancellationToken)
         {
             var employees = _employeeRepository.GetAll();
             List<EmployeeDto> result = new List<EmployeeDto>();
@@ -40,7 +40,7 @@ namespace Application.Service.Queries
                 }
             }
 
-            return result;
+            return Task.FromResult(result);
         }
     }
 }

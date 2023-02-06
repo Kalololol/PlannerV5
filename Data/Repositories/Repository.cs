@@ -28,15 +28,11 @@ namespace Data.Repositories
         {
             return entities.SingleOrDefault(e => e.Id == id);
         }
+
         public void Add(TEntity entity)
         {
             entities.Add(entity);
             SaveChanges();
-        }
-
-        public IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
-        {
-            return entities.Where(predicate);
         }
 
         public void Update(TEntity entity)

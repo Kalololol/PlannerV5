@@ -1,13 +1,15 @@
 ﻿@page "/allEmployees"
+@attribute [Authorize]
 @inject IEmployeeService _employeeService
-@inject IRequestService _requestService
 @inject NavigationManager NavigationManager
 
+
+<AuthorizeView>
+    <Authorized>
 <p>
     <h3>Wszyscy pracownicy</h3> 
 </p>
 <p>
-
     @if (employees == null)
     {
         <div>
@@ -40,6 +42,12 @@
         <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="OnButtonClickedBack">Dodaj nowego pracownika</MudButton>
     }
 </p>
+    </Authorized>
+    <NotAuthorized>
+        <p>Dostęp tylko dla zalgowanych</p>
+    </NotAuthorized>
+</AuthorizeView>
+
 
 @code {
     List<EmployeeModel> employees = new();

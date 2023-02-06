@@ -2,13 +2,16 @@
 using Application.Service.Queries;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebBlazor.Exceptions;
 using WebBlazor.ModelWebBlazor;
 
 namespace WebBlazor.Controller
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class EmployeeController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -75,6 +78,7 @@ namespace WebBlazor.Controller
             }
         }
         [HttpPost]
+        [Authorize(Roles = "Manager")]
         [Route("addEmployee")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -99,6 +103,7 @@ namespace WebBlazor.Controller
         }
 
         [HttpPost]
+        [Authorize(Roles = "Manager")]
         [Route("editEmployee")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -122,6 +127,8 @@ namespace WebBlazor.Controller
 
         [HttpPost]
         [Route("deleteEmployee")]
+        [Authorize(Roles = "Manager")]
+
         public async Task<ActionResult<EmployeeModel>> DeleteEmployee(EmployeeModel employee)
         {
             try
@@ -137,7 +144,6 @@ namespace WebBlazor.Controller
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     "Error creating new employee record");
             }
-        }
-
+        }     
     }
 }

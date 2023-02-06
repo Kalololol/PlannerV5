@@ -2,7 +2,7 @@
 using Application.Service.Queries;
 using AutoMapper;
 using MediatR;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebBlazor.ModelWebBlazor;
 
@@ -107,6 +107,8 @@ namespace WebBlazor.Controller
         }
         [HttpPost]
         [Route("addRequest")]
+        [Authorize(Roles = "User")]
+
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<RequestModel>> AddRequest(RequestModel request)
@@ -116,7 +118,7 @@ namespace WebBlazor.Controller
             {
                 if (request == null)
                     return BadRequest();
-
+               // var employeeId = int.Parse(ClaimTypes.NameIdentifier);
                 await _mediator.Send(_mapper.Map<CreateRequestCommand>(request));
 
                 //   return CreatedAtAction(nameof(GetEmployeeById),  employee);
@@ -131,6 +133,8 @@ namespace WebBlazor.Controller
 
         [HttpPost]
         [Route("editRequest")]
+        [Authorize(Roles = "User")]
+
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
@@ -153,6 +157,8 @@ namespace WebBlazor.Controller
 
         [HttpPost]
         [Route("deleteEmployee")]
+        [Authorize(Roles = "User")]
+
         public async Task<ActionResult<EmployeeModel>> DeleteEmployee(EmployeeModel employee)
         {
             try
