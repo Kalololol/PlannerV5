@@ -36,11 +36,11 @@ namespace WebBlazor.ServiceBlazor
         }
 
         public async Task<LoginModel> Login(LoginModel login)
+        //public async Task<string> Login(LoginModel login)
         {
             try
             {
                 var response = await httpClient.PostAsJsonAsync("api/account/login", login);
-
                 if (response.IsSuccessStatusCode)
                 {
                     return login;

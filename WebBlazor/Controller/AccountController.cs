@@ -25,7 +25,8 @@ namespace WebBlazor.Controller
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<EmployeeModel>> Login(LoginModel login)
+        //public async Task<ActionResult<EmployeeModel>> Login(LoginModel login)
+        public async Task<ActionResult<string>> Login(LoginModel login)
         {
             try
             {
@@ -67,11 +68,11 @@ namespace WebBlazor.Controller
 
 
                 var token = _accountService.GenerateJwt(employee, role);
-                return Ok();
+                return Ok(token);
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status501NotImplemented,
+                return StatusCode(StatusCodes.Status400BadRequest,
                     "Błąd podczas przetwarzania żądania autoryzacji.");
             }
         }

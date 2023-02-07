@@ -1,10 +1,12 @@
-﻿namespace WebBlazor
+﻿using System.Security.Claims;
+
+namespace WebBlazor
 {
-   /* public class CustomAuthStateProvider : AuthenticationStateProvider
+/*    public class CustomAuthStateProvider : AuthenticationStateProvider
     {
         public override Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            throw new NotImplementedException();
+            var identity = new ClaimsIdentity(GenerateJwt)
         }
     }*/
 }

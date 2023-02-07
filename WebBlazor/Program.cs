@@ -34,7 +34,7 @@ builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IRequestService, RequestService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 //builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
-builder.Services.AddAuthorizationCore();
+//builder.Services.AddAuthorizationCore();
 
 
 var authenticationSettings = new AuthenticationSettings();
@@ -56,6 +56,11 @@ builder.Services.AddAuthentication(option =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtIssuer)),
     };
 });
+
+/*builder.Services.AddAuthorization(option =>
+{
+    option.AddPolicy("HasRole", builder => builder.RequireClaim("RoleId", "2"));
+});*/
 
 
 
