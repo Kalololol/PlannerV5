@@ -27,19 +27,20 @@ namespace WebBlazor.ServiceBlazor
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
         private readonly AuthenticationSettings _authenticationSettings;
-        private readonly ILocalStorageService _localStorage;
+       // private readonly ILocalStorageService _localStorage;
 
         public AccountService(HttpClient httpClient, 
             IMediator mediator, 
             IMapper mapper, 
-            AuthenticationSettings authenticationSettings, 
-            ILocalStorageService localStorage)
+            AuthenticationSettings authenticationSettings 
+            //,ILocalStorageService localStorage
+            )
         {
             this.httpClient = httpClient;
             _mediator = mediator;
             _mapper = mapper;
             _authenticationSettings = authenticationSettings;
-            _localStorage = localStorage;
+           // _localStorage = localStorage;
         }
 
         public async Task<LoginModel> Login(LoginModel login)
@@ -49,7 +50,7 @@ namespace WebBlazor.ServiceBlazor
                 var response = await httpClient.PostAsJsonAsync("api/account/login", login);
                 if (response.IsSuccessStatusCode)
                 {
-                    await _localStorage.SetItemAsync("response", response);
+                   // await _localStorage.SetItemAsync("token", response);
                     return login;
                 }
                 else
@@ -83,10 +84,10 @@ namespace WebBlazor.ServiceBlazor
                     expires: expires,
                     signingCredentials: cred);
 
-            var tokenHandler = new JwtSecurityTokenHandler().WriteToken(token);
+            var tokenHandler = new JwtSecurityTokenHandler();
 
 
-            return tokenHandler;
+            return tokenHandler.WriteToken(token);
         }            
     }
 }

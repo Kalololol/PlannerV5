@@ -12,6 +12,7 @@ using System.Text;
 using WebBlazor;
 using WebBlazor.AutoMapperWebBlazor;
 using WebBlazor.ServiceBlazor;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,7 +35,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https:/
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IRequestService, RequestService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
-builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
+//builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 builder.Services.AddAuthorizationCore();
 builder.Services.AddBlazoredLocalStorage();
 
@@ -52,6 +53,19 @@ builder.Services.AddAuthentication(option =>
 {
     cfg.RequireHttpsMetadata = false;
     cfg.SaveToken = true;
+    cfg.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var accesToken = context.Request.Query["access_token"];
+            var path = context.HttpContext.Request.Path;
+            if (!string.IsNullOrEmpty(accesToken) && path.StartsWithSegments("/Hubs"))
+            {
+                context.Token = accesToken;
+            }
+            return Task.CompletedTask;
+        }
+    };
     cfg.TokenValidationParameters = new TokenValidationParameters
     {
         ValidIssuer = authenticationSettings.JwtIssuer,

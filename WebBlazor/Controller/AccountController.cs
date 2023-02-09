@@ -23,8 +23,9 @@ namespace WebBlazor.Controller
         public AccountController(IAccountService accountService, 
             IMediator mediator, 
             IMapper mapper, 
-            AuthenticationStateProvider authStateProvider, 
-            ILocalStorageService localStorage)
+            AuthenticationStateProvider authStateProvider 
+            ,ILocalStorageService localStorage
+           )
         {
             _accountService = accountService;
             _mediator = mediator;
@@ -74,7 +75,6 @@ namespace WebBlazor.Controller
 
                 //var result = await Http.PostAsJsonAsync("api/account/login", login);
                 //var token = await result.Content.ReadAsStringAsync();
-                await _localStorage.SetItemAsync("token", token);
 
                 return Ok(token);
             }
