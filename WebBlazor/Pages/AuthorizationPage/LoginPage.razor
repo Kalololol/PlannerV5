@@ -6,7 +6,6 @@
 @inject ILocalStorageService LocalStorage
 @inject AuthenticationStateProvider AuthStateProvider
 @using Microsoft.JSInterop
-@inject CustomAuthStateProvider customAuthStateProvider
 
 
 <h3>LoginPage</h3>
@@ -48,7 +47,6 @@
             var result = await Http.PostAsJsonAsync("api/account/login", login);
             var token = await result.Content.ReadAsStringAsync();
             await LocalStorage.SetItemAsync("token", token);
-            await AuthStateProvider.GetAuthenticationStateAsync();
 
         }
     }
