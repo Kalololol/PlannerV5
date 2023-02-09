@@ -72,6 +72,10 @@ namespace WebBlazor.Controller
                 await _localStorage.SetItemAsync("token", token);
                 await _authStateProvider.GetAuthenticationStateAsync();
 
+                //var result = await Http.PostAsJsonAsync("api/account/login", login);
+                //var token = await result.Content.ReadAsStringAsync();
+                await _localStorage.SetItemAsync("token", token);
+
                 return Ok(token);
             }
             catch (Exception)
