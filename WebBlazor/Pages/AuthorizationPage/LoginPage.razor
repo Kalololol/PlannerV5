@@ -2,34 +2,36 @@
 @inject IAccountService _accountService
 @inject NavigationManager NavigationManager
 @inject IDialogService DialogService
+@inject HttpClient Http
+@inject ILocalStorageService LocalStorage
+@inject AuthenticationStateProvider AuthStateProvider
+@using Microsoft.JSInterop
+@inject CustomAuthStateProvider customAuthStateProvider
 
 
 <h3>LoginPage</h3>
-
-        <EditForm Model="@login">
-                <DataAnnotationsValidator />
-                <ValidationSummary />
-                <body>
+<EditForm Model="@login">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <body>
         <td>Email: </td>
         <InputText id="name" @bind-Value="login.Email" required />
         <br />
         <td>Hasło: </td>
         <InputText id="surname" @bind-Value="login.Password" required />
         <br />
-                </body>
-
+    </body>
 </EditForm>
 <MudButton Variant="Variant.Filled" Color="Color.Success" @onclick="OnButtonClickedLogin">Zaloguj</MudButton>
 
-
-
 @code {
-    LoginModel login = new();
+    LoginModel login = new LoginModel();
 
     protected override async Task OnInitializedAsync()
     {
         base.OnInitializedAsync();
     }
+
 
     private async void OnButtonClickedLogin()
     {
@@ -43,9 +45,11 @@
         }
         else
         {
-            await _accountService.Login(login);
-            
+            var result = await Http.PostAsJsonAsync("api/account/login", login);
+            var token = await result.Content.ReadAsStringAsync();
+            await LocalStorage.SetItemAsync("token", token);
+            await AuthStateProvider.GetAuthenticationStateAsync();
+
         }
     }
-
 }

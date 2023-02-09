@@ -2,6 +2,7 @@
 using Application.Service.Queries;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -26,23 +27,29 @@ namespace WebBlazor.ServiceBlazor
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
         private readonly AuthenticationSettings _authenticationSettings;
+        private readonly ILocalStorageService _localStorage;
 
-        public AccountService(HttpClient httpClient, IMediator mediator, IMapper mapper, AuthenticationSettings authenticationSettings)
+        public AccountService(HttpClient httpClient, 
+            IMediator mediator, 
+            IMapper mapper, 
+            AuthenticationSettings authenticationSettings, 
+            ILocalStorageService localStorage)
         {
             this.httpClient = httpClient;
             _mediator = mediator;
             _mapper = mapper;
             _authenticationSettings = authenticationSettings;
+            _localStorage = localStorage;
         }
 
         public async Task<LoginModel> Login(LoginModel login)
-        //public async Task<string> Login(LoginModel login)
         {
             try
             {
                 var response = await httpClient.PostAsJsonAsync("api/account/login", login);
                 if (response.IsSuccessStatusCode)
                 {
+                    await _localStorage.SetItemAsync("response", response);
                     return login;
                 }
                 else
@@ -59,24 +66,8 @@ namespace WebBlazor.ServiceBlazor
 
         public string GenerateJwt(EmployeeModel employee, RoleModel role)
         {
-            // var employees = _mapper.Map<List<EmployeeModel>>(_mediator.Send(new GetEmployeesQuery()));
-            //  var employee = employees.Find(x => x.AddressEmail == dto.Email);
-           /* var input =  _mediator.Send(_mapper.Map<GetEmployeeByEmailQuery>(dto));
-            var employee = _mapper.Map<EmployeeModel>(input);
-            if(employee == null)
-            {
-                throw new BadRequestException("Invalid username or password");
-            }
-            if(employee.Password != dto.Password)
-            {
-                throw new BadRequestException("Invalid username or password");
-
-            }
-            var role = _mapper.Map<RoleModel>(_mediator.Send(new GetRoleByIdQuery(employee.RoleId)));
-*/
-
             var claims = new List<Claim>()
-            {
+            {               
                 new Claim(ClaimTypes.NameIdentifier, employee.Id.ToString()),
                 new Claim(ClaimTypes.Name, $"{employee.Name} {employee.Surname}"),
                 new Claim(ClaimTypes.Role, $"{role.Name}")
@@ -92,8 +83,10 @@ namespace WebBlazor.ServiceBlazor
                     expires: expires,
                     signingCredentials: cred);
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            return tokenHandler.WriteToken(token);
+            var tokenHandler = new JwtSecurityTokenHandler().WriteToken(token);
+
+
+            return tokenHandler;
         }            
     }
 }

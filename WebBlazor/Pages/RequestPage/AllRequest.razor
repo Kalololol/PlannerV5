@@ -1,5 +1,6 @@
 ﻿@page "/allRequest"
 @inject IRequestService _requestService
+@attribute [Authorize]
 
 <AuthorizeView>
     <Authorized>

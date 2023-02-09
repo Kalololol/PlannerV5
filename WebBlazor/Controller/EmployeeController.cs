@@ -11,7 +11,6 @@ namespace WebBlazor.Controller
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class EmployeeController : ControllerBase
     {
         private readonly IMapper _mapper;

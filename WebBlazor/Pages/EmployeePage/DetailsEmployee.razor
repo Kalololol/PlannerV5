@@ -1,5 +1,6 @@
 ﻿@page "/detailsEmployee"
 @page "/detailsEmployee/{id:int}"
+@attribute [Authorize]
 @inject IEmployeeService _employeeService
 @inject IRequestService _requestService 
 @inject IDialogService DialogService

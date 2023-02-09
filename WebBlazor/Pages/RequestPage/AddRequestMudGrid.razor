@@ -1,5 +1,5 @@
 ﻿@page "/addRequestMud"
-@using System.Globalization
+@attribute [Authorize]
 @inject IRequestService _requestService
 @inject IDialogService DialogService
 @inject NavigationManager NavigationManager

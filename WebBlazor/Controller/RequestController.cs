@@ -2,8 +2,8 @@
 using Application.Service.Queries;
 using AutoMapper;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using WebBlazor.ModelWebBlazor;
 
 namespace WebBlazor.Controller
@@ -32,7 +32,6 @@ namespace WebBlazor.Controller
                 List<RequestModel> result = new List<RequestModel>();
                 var requests = await _mediator.Send(new GetRequestsQuery());
 
-
                 if (requests == null) return NotFound();
                 else
                 {
@@ -44,42 +43,12 @@ namespace WebBlazor.Controller
                     }
                     return Ok(result);
                 }
-
             }
             catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Brak odpowiedzi z bazy, błąd 500");
             }
-        }
-     /*   [HttpGet("{id:int}")]
-        [Route("getAllRequestsByEmployee/{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<IList<RequestModel>>> GetAllRequestsByEmployee(int id)
-        {
-            try
-            {
-                List<RequestModel> result = new List<RequestModel>();
-                var requests = await _mediator.Send(new GetAllRequestsByEmployeeQuery(id));
-
-
-                if (requests == null) return NotFound();
-                else
-                {
-                    foreach (var r in requests)
-                    {
-                        var request = _mapper.Map<RequestModel>(r);
-                        result.Add(request);
-                    }
-                    return Ok(result);
-                }
-
-            }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Brak odpowiedzi z bazy, błąd 500");
-            }
-        }*/
+        }    
 
         [HttpGet("{id:int}")]
         [Route("getRequestById/{id}")]
@@ -98,7 +67,6 @@ namespace WebBlazor.Controller
                     var result = _mapper.Map<RequestModel>(item);
                     return Ok(result);
                 }
-
             }
             catch (Exception)
             {
@@ -107,21 +75,19 @@ namespace WebBlazor.Controller
         }
         [HttpPost]
         [Route("addRequest")]
-        [Authorize(Roles = "User")]
-
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<RequestModel>> AddRequest(RequestModel request)
         {
-
             try
             {
                 if (request == null)
                     return BadRequest();
-               // var employeeId = int.Parse(ClaimTypes.NameIdentifier);
+                var input = ClaimTypes.NameIdentifier;
+                var employeeId = int.Parse(ClaimTypes.NameIdentifier);
+                request.EmployeeId = employeeId;
                 await _mediator.Send(_mapper.Map<CreateRequestCommand>(request));
 
-                //   return CreatedAtAction(nameof(GetEmployeeById),  employee);
                 return Ok("Dodano");
             }
             catch (Exception)
@@ -133,8 +99,6 @@ namespace WebBlazor.Controller
 
         [HttpPost]
         [Route("editRequest")]
-        [Authorize(Roles = "User")]
-
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
@@ -157,8 +121,6 @@ namespace WebBlazor.Controller
 
         [HttpPost]
         [Route("deleteEmployee")]
-        [Authorize(Roles = "User")]
-
         public async Task<ActionResult<EmployeeModel>> DeleteEmployee(EmployeeModel employee)
         {
             try
@@ -172,7 +134,7 @@ namespace WebBlazor.Controller
             catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
-                    "Error creating new employee record");
+                    "błąd podczas usuwania rekordu");
             }
         }
     }

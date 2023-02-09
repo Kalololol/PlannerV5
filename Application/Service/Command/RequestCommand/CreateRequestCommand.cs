@@ -36,14 +36,14 @@ namespace Application.Service.Command
 
         public Task<Unit> Handle(CreateRequestCommand request, CancellationToken cancellationToken)
         {
-            var employee = _employeeRepository.GetById(1); // tutaj wrzucic employeeId zalogowanego usera
+            var employee = _employeeRepository.GetById(request.EmployeeId); // tutaj wrzucic employeeId zalogowanego usera
             var req = new RequestDto()
             {
                 DayIndisposition = request.DayIndisposition,
                 Change = request.Change,
                 TypeRequest = request.TypeRequest,
                 EmployeeName = employee.Surname + " " + employee.Name,
-                EmployeeId = 1,//request.EmployeeId, // tutaj wrzucic id zalogowanego usera;
+                EmployeeId = request.EmployeeId, // tutaj wrzucic id zalogowanego usera;
                 Active = true
             };
             var result = _mapper.Map<Request>(req);

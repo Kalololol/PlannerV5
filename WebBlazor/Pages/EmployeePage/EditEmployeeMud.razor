@@ -1,8 +1,7 @@
 ﻿@page "/editEmployee"
 @page "/editEmployee/{id:int}"
+@attribute [Authorize]
 @inject IEmployeeService _employeeService
-@using System.Text.RegularExpressions
-@using System.ComponentModel.DataAnnotations
 @inject NavigationManager NavigationManager
 @inject IDialogService DialogService
 

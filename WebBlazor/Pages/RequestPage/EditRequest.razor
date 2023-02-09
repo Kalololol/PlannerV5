@@ -1,5 +1,6 @@
 ﻿@page "/editRequesttt"
 @page "/editRequesttt/{id:int}"
+@attribute [Authorize]
 @inject IRequestService _requestService
 @inject IDialogService DialogService
 @inject NavigationManager NavigationManager

@@ -1,4 +1,5 @@
 global using Microsoft.AspNetCore.Components.Authorization;
+global using Blazored.LocalStorage;
 using Application;
 using Data.Context;
 using Data.Repositories;
@@ -33,8 +34,9 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https:/
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IRequestService, RequestService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
-//builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
-//builder.Services.AddAuthorizationCore();
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
+builder.Services.AddAuthorizationCore();
+builder.Services.AddBlazoredLocalStorage();
 
 
 var authenticationSettings = new AuthenticationSettings();

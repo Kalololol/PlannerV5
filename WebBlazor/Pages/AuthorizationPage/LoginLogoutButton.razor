@@ -1,0 +1,29 @@
+﻿@inject NavigationManager NavigationManager
+@inject ILocalStorageService LocalStorage
+@inject AuthenticationStateProvider AuthStateProvider
+
+<AuthorizeView>
+    <Authorized>
+        <span>Jesteś zalogowany jako @context.User.Identity.Name</span>
+
+        <button @onclick"Logout" class="btn btn-danger">Wyloguj</button>
+    </Authorized>
+    <NotAuthorized>
+        <button @onclick"Login" class="btn btn-primary">Zaloguj</button>
+    </NotAuthorized>
+
+</AuthorizeView>
+
+
+
+@code {
+    void Login()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+    async Task Logout()
+    {
+        await LocalStorage.RemoveItemAsync("token");
+        await AuthStateProvider.GetAuthenticationStateAsync();
+    }
+}
