@@ -35,7 +35,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https:/
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IRequestService, RequestService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
-//builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 builder.Services.AddAuthorizationCore();
 builder.Services.AddBlazoredLocalStorage();
 
@@ -81,16 +81,16 @@ builder.Services.AddAuthentication(option =>
 
 
 
-//builder.Services.AddHttpClient<IEmployeeService, EmployeeService>
-//    (client =>
-//    {
-//        client.BaseAddress = new Uri(("https://localhost:7205/"));
-//    });
-//builder.Services.AddHttpClient<IRequestService, RequestService>
-//    (client =>
-//    {
-//        client.BaseAddress = new Uri(("https://localhost:7205/"));
-//    });
+builder.Services.AddHttpClient<IEmployeeService, EmployeeService>
+    (client =>
+    {
+        client.BaseAddress = new Uri(("https://localhost:7205/"));
+    });
+builder.Services.AddHttpClient<IRequestService, RequestService>
+    (client =>
+    {
+        client.BaseAddress = new Uri(("https://localhost:7205/"));
+    });
 
 builder.Services.AddMudServices();
 

@@ -45,24 +45,33 @@ namespace WebBlazor.ServiceBlazor
 
         public async Task<LoginModel> Login(LoginModel login)
         {
-            try
+
+            var response = await httpClient.PostAsJsonAsync("api/account/login", login);
+            if (!response.IsSuccessStatusCode)
             {
-                var response = await httpClient.PostAsJsonAsync("api/account/login", login);
-                if (response.IsSuccessStatusCode)
-                {
-                   // await _localStorage.SetItemAsync("token", response);
-                    return login;
-                }
-                else
-                {
-                    var message = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Http status:{response.StatusCode} Message -{message}");
-                }
+                throw new Exception("Failed to login");
             }
-            catch (Exception)
-            {
-                throw;
-            }
+
+            return login;
+
+            //try
+            //{
+            //    var response = await httpClient.PostAsJsonAsync("api/account/login", login);
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //       // await _localStorage.SetItemAsync("token", response);
+            //       // return login;
+            //    }
+            //    else
+            //    {
+            //        var message = await response.Content.ReadAsStringAsync();
+            //        throw new Exception($"Http status:{response.StatusCode} Message -{message}");
+            //    }
+            //}
+            //catch (Exception)
+            //{
+            //    throw;
+            //}
         }
 
         public string GenerateJwt(EmployeeModel employee, RoleModel role)

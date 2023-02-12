@@ -8,19 +8,6 @@
 
 
 <h3>LoginPage</h3>
-<EditForm Model="@login">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <body>
-        <td>Email: </td>
-        <InputText id="name" @bind-Value="login.Email" required />
-        <br />
-        <td>Hasło: </td>
-        <InputText id="surname" @bind-Value="login.Password" required />
-        <br />
-    </body>
-</EditForm>
-<MudButton Variant="Variant.Filled" Color="Color.Success" @onclick="OnButtonClickedLogin">Zaloguj</MudButton>
 
 <MudCard>
     <MudForm Model="@login" ValidationDelay="0">
