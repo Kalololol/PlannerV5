@@ -6,8 +6,10 @@
 @inject ILocalStorageService LocalStorage
 @inject AuthenticationStateProvider AuthStateProvider
 
-
-<h3>LoginPage</h3>
+<AuthorizeView>
+    <NotAuthorized>
+<p> </p>
+<h4>LOGOWANIE</h4>
 
 <MudCard>
     <MudForm Model="@login" ValidationDelay="0">
@@ -22,20 +24,20 @@
                           For="@(() => login.Password)"
 							  Immediate="true"
 							  Label="Hasło" />
-
-				
         </MudCardContent>
         </MudForm>
          <MudCardActions>
         <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" @onclick="OnButtonClickedLogin" >Zaloguj</MudButton>
     </MudCardActions>
 </MudCard>
+</NotAuthorized>
+<Authorized>
 
-
+    </Authorized>
+</AuthorizeView>
+    
 
 @code {
-    [Inject] ISnackbar Snackbar { get; set; }
-
     LoginModel login = new LoginModel();
     MudForm form;
 
@@ -53,9 +55,7 @@
         else
         {
             var result = await Http.PostAsJsonAsync("api/account/login", login);
-            var token = await result.Content.ReadAsStringAsync();
-            await LocalStorage.SetItemAsync("token", token);
-            await AuthStateProvider.GetAuthenticationStateAsync();
+            NavigationManager.NavigateTo("/allRequest");
         }
     }
 

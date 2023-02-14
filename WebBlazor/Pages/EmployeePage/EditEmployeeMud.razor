@@ -7,7 +7,7 @@
 
 <AuthorizeView Roles="Manager">
     <Authorized>
-<h3>EditEmployeeMud</h3>
+<h3>Edycja konta @employee.Surname @employee.Name</h3>
 <MudGrid>
     <MudItem xs="12" sm="7">
         <MudPaper Class="pa-4">
@@ -30,6 +30,7 @@
             <MudButton Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="@(()=>form.Reset())" Class="mx-2">Wyczyść formularz</MudButton>
             <MudButton Variant="Variant.Filled" DisableElevation="true" OnClick="@(()=>form.ResetValidation())">Wyczyść błędy</MudButton>
             <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="OnButtonClickedDetails" >Cofnij</MudButton>
+            <MudButton Variant="Variant.Outlined" Color="Color.Error" OnClick="OnButtonClickedDeleted">Usuń</MudButton>
         </MudPaper>
     </MudItem>
     <MudItem xs="12" sm="5">
@@ -44,7 +45,7 @@
 </MudGrid>
     </Authorized>
     <NotAuthorized>
-        <p>Dostęp tylko dla zalgowanych</p>
+        <p>Nie masz wymaganych uprawnień, dostęp zablokowany.</p>
     </NotAuthorized>
 </AuthorizeView>
 
@@ -97,6 +98,28 @@
                 NavigationManager.NavigateTo($"/detailsEmployee/{Id}");
             }
         }
+    }
+    private async void OnButtonClickedDeleted()
+    {
+        string state = "";
+        bool? result = await DialogService.ShowMessageBox(
+            "Usuwasz obiekt",
+            "Czy na pewno chcesz usunąć?",
+            yesText: "TAK-USUŃ!", cancelText: "ANULUJ");
+        state = result == null ? "0" : "1";
+        StateHasChanged();
+        if (result == true)
+        {
+            await EmployeeDeleted();
+            NavigationManager.NavigateTo("/allEmployees");
+        }
+    }
+    private async Task EmployeeDeleted()
+    {
+        employee.Id = Id;
+        employee.Active = false;
+        await _employeeService.DeleteEmployee(employee);
+
     }
     void OnButtonClickedDetails()
     {

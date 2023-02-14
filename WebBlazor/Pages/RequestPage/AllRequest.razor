@@ -7,11 +7,6 @@
 <div>
     <h3>Prośby grafikowe - @data.ToShortDateString() </h3>
 </div>
-@if (Elements == null)
-{
-    <p><em>Loading...</em></p>
-}
-else{
 <MudDataGrid T="RequestModel" Items="@Elements" Filterable="true" FilterMode="@DataGridFilterMode.Simple">
     <Columns>            
             <Column T="RequestModel" Field="DayIndisposition" Title="Data" />
@@ -20,7 +15,6 @@ else{
         <Column T="RequestModel" Field="EmployeeName" Title="Pracownik"/>
     </Columns>
 </MudDataGrid>
-}
     </Authorized>
     <NotAuthorized>
         <p>Dostęp tylko dla zalogowanych</p>

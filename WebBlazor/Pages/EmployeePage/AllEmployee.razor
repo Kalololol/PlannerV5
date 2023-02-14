@@ -10,14 +10,6 @@
     <h3>Wszyscy pracownicy</h3> 
 </p>
 <p>
-    @if (employees == null)
-    {
-        <div>
-            <p>Ładowanie.... </p>
-        </div>
-    }
-    else
-    {
         <table class="table">
              <thead>
             <tr>
@@ -40,7 +32,6 @@
             </tbody>
         </table>
         <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="OnButtonClickedBack">Dodaj nowego pracownika</MudButton>
-    }
 </p>
     </Authorized>
     <NotAuthorized>

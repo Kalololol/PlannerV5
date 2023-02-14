@@ -3,6 +3,7 @@ using Application.Service.Queries;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -49,35 +50,15 @@ namespace WebBlazor.ServiceBlazor
             var response = await httpClient.PostAsJsonAsync("api/account/login", login);
             if (!response.IsSuccessStatusCode)
             {
-                throw new Exception("Failed to login");
+                throw new Exception("Niepoprawne dane logowania");
             }
-
             return login;
-
-            //try
-            //{
-            //    var response = await httpClient.PostAsJsonAsync("api/account/login", login);
-            //    if (response.IsSuccessStatusCode)
-            //    {
-            //       // await _localStorage.SetItemAsync("token", response);
-            //       // return login;
-            //    }
-            //    else
-            //    {
-            //        var message = await response.Content.ReadAsStringAsync();
-            //        throw new Exception($"Http status:{response.StatusCode} Message -{message}");
-            //    }
-            //}
-            //catch (Exception)
-            //{
-            //    throw;
-            //}
         }
 
         public string GenerateJwt(EmployeeModel employee, RoleModel role)
         {
             var claims = new List<Claim>()
-            {               
+            {
                 new Claim(ClaimTypes.NameIdentifier, employee.Id.ToString()),
                 new Claim(ClaimTypes.Name, $"{employee.Name} {employee.Surname}"),
                 new Claim(ClaimTypes.Role, $"{role.Name}")

@@ -24,7 +24,6 @@
             <td>@employee.PhoneNumber</td>
             <td>@employee.Password</td>
         <MudButton Variant="Variant.Outlined" Color="Color.Secondary" OnClick="OnButtonClickedEdit">Edytuj</MudButton>
-        <MudButton Variant="Variant.Outlined" Color="Color.Error" OnClick="OnButtonClicked">Usuń</MudButton>
         </tr>
 </table> 
     <br />
@@ -46,29 +45,6 @@
     {
         await base.OnInitializedAsync();
         employee = await _employeeService.GetEmployeeById(Id);
-    }
-
-    private async Task EmployeeDeleted()
-    {
-        employee.Id = Id;
-        employee.Active = false;
-        await _employeeService.DeleteEmployee(employee);
-        
-    }
-    private async void OnButtonClicked()
-    {
-        string state = "";
-        bool? result = await DialogService.ShowMessageBox(
-            "Usuwasz obiekt",
-            "Czy na pewno chcesz usunąć?",
-            yesText: "TAK-USUŃ!", cancelText: "ANULUJ");
-        state = result == null ? "0" : "1";
-        StateHasChanged();
-        if (result == true)
-        {
-            await EmployeeDeleted();
-            NavigationManager.NavigateTo("/allEmployees");
-        }
     }
     private void OnButtonClickedEdit()
     {

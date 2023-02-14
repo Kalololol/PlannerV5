@@ -33,16 +33,7 @@
 
 @code {
     RequestModel request = new();
-    public string Change { get; set; }
-    public string TypeRequest { get; set; }
-    public DateTime DayIndisposition { get; set; }
-    bool success;
-
     DateTime? Day = DateTime.Today;
-
-
-    DateTime? _pickerMonth = DateTime.Now;
-
 
     private async void OnButtonClickedBack()
     {
@@ -58,7 +49,6 @@
             NavigationManager.NavigateTo("/allRequest");
         }
     }
-
     private async void OnButtonClicked()
     {
         string state = "";
@@ -88,24 +78,6 @@
         request.DayIndisposition = (Convert.ToDateTime(Day));
         if (Day == null) request.DayIndisposition = DateTime.Now;
 
-        
         await _requestService.AddRequest(request);
-
-    }
-
-    public void OnSwipe(SwipeDirection direction)
-    {
-        if (direction == SwipeDirection.LeftToRight)
-        {
-            _pickerMonth = _pickerMonth.Value.AddMonths(-1);
-            StateHasChanged();
-        }
-        else if (direction == SwipeDirection.RightToLeft)
-        {
-            _pickerMonth = _pickerMonth.Value.AddMonths(1);
-            StateHasChanged();
-        }
-    }
-
-    
+    }    
 }

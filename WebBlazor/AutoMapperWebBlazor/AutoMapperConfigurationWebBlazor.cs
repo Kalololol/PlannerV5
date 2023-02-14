@@ -19,7 +19,6 @@ namespace WebBlazor.AutoMapperWebBlazor
                cfg.CreateMap<EmployeeModel, EditEmployeeCommand>().ReverseMap();
                cfg.CreateMap<EditEmployeeCommand, Employee>().ReverseMap();
                cfg.CreateMap<EmployeeModel, DeleteEmployeeCommand>().ReverseMap();
-               cfg.CreateMap<AuthorizationEmployeeQuery, EmployeeModel>().ReverseMap();
                cfg.CreateMap<LoginModel, GetEmployeeByEmailQuery>().ReverseMap();
 
 

@@ -24,6 +24,8 @@
 </MudSelect>
 <MudButton Variant="Variant.Filled" Color="Color.Success" OnClick="OnButtonClicked">Zapisz</MudButton>
 <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="OnButtonClickedBack">Cofnij</MudButton>
+<MudButton Variant="Variant.Outlined" Color="Color.Error" OnClick="OnButtonClickedDeleted">Usuń</MudButton>
+
 }
     </Authorized>
     <NotAuthorized>
@@ -95,6 +97,10 @@
         result.Id = Id;
         result.DayIndisposition = Convert.ToDateTime(Day);
         await _requestService.EditRequest(result);
+    }
+    private async Task OnButtonClickedDeleted()
+    {
+        
     }
 
 }
