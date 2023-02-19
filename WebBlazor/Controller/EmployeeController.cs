@@ -26,6 +26,7 @@ namespace WebBlazor.Controller
         [Route("allEmployees")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize]
         public async Task<ActionResult<IList<EmployeeModel>>> GetAll()
         {
 

@@ -3,7 +3,6 @@
 @inject NavigationManager NavigationManager
 @inject IDialogService DialogService
 @inject HttpClient Http
-@inject ILocalStorageService LocalStorage
 @inject AuthenticationStateProvider AuthStateProvider
 
 <AuthorizeView>
@@ -55,9 +54,10 @@
         else
         {
             var result = await Http.PostAsJsonAsync("api/account/login", login);
+            //await JS.InvokeVoidAsync("localStorage.setItem", "token", result.ToString());
+
             NavigationManager.NavigateTo("/allRequest");
         }
+
     }
-
-
 }

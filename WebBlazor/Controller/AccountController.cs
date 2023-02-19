@@ -1,5 +1,6 @@
 ﻿using Application.Service.Queries;
 using AutoMapper;
+using Blazored.SessionStorage;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using WebBlazor.Exceptions;
@@ -18,20 +19,20 @@ namespace WebBlazor.Controller
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
         private readonly AuthenticationStateProvider _authStateProvider;
-        private readonly ILocalStorageService _localStorage;
+        private readonly ISessionStorageService _sessionStorageService;
 
-        public AccountController(IAccountService accountService, 
-            IMediator mediator, 
-            IMapper mapper, 
-            AuthenticationStateProvider authStateProvider 
-            ,ILocalStorageService localStorage
-           )
+
+        public AccountController(IAccountService accountService,
+            IMediator mediator,
+            IMapper mapper,
+            AuthenticationStateProvider authStateProvider,
+            ISessionStorageService sessionStorageService)
         {
             _accountService = accountService;
             _mediator = mediator;
             _mapper = mapper;
             _authStateProvider = authStateProvider;
-            _localStorage = localStorage;
+            _sessionStorageService = sessionStorageService;
         }
 
         [HttpPost("login")]
@@ -70,8 +71,7 @@ namespace WebBlazor.Controller
 
                 var token = _accountService.GenerateJwt(employee, role);
 
-                await _localStorage.SetItemAsync("token", token);
-                await _authStateProvider.GetAuthenticationStateAsync();
+                await _sessionStorageService.SetItemAsync("token", token);
 
                 return Ok(token);
             }
@@ -83,7 +83,8 @@ namespace WebBlazor.Controller
         }
 
 
-       
+
+
 
 
     }

@@ -13,6 +13,7 @@ using WebBlazor;
 using WebBlazor.AutoMapperWebBlazor;
 using WebBlazor.ServiceBlazor;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Blazored.SessionStorage;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,16 +36,20 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https:/
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IRequestService, RequestService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
-//builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
-//builder.Services.AddAuthorizationCore();
-builder.Services.AddBlazoredLocalStorage();
 
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//    .AddJwtBearer();
+//builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
+
+builder.Services.AddAuthorizationCore();
+//builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddBlazoredSessionStorage();
+
 
 var authenticationSettings = new AuthenticationSettings();
+
 builder.Configuration.GetSection("Authentication").Bind(authenticationSettings);
+
 builder.Services.AddSingleton(authenticationSettings);
+
 builder.Services.AddAuthentication(option =>
 {
     option.DefaultAuthenticateScheme = "Bearer";
@@ -54,27 +59,47 @@ builder.Services.AddAuthentication(option =>
 {
     cfg.RequireHttpsMetadata = false;
     cfg.SaveToken = true;
-    cfg.Events = new JwtBearerEvents
-    {
-        OnMessageReceived = context =>
-        {
-            var accesToken = context.Request.Query["access_token"];
-            var path = context.HttpContext.Request.Path;
-            if (!string.IsNullOrEmpty(accesToken) && path.StartsWithSegments("/Hubs"))
-            {
-                context.Token = accesToken;
-            }
-            return Task.CompletedTask;
-        }
-    };
     cfg.TokenValidationParameters = new TokenValidationParameters
     {
         ValidIssuer = authenticationSettings.JwtIssuer,
         ValidAudience = authenticationSettings.JwtIssuer,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtIssuer)),
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey)),
     };
-    cfg.SaveToken = true;
 });
+
+
+// builder.Services.AddAuthentication(option =>
+//{
+//    option.DefaultAuthenticateScheme = "Bearer";
+//    option.DefaultScheme = "Bearer";
+//    option.DefaultChallengeScheme = "Bearer";
+//}).AddJwtBearer(cfg =>
+//{
+//    cfg.RequireHttpsMetadata = false;
+//    cfg.SaveToken = true;
+
+//    cfg.Events = new JwtBearerEvents
+//    {
+//        OnMessageReceived = context =>
+//        {
+//            var accesToken = context.Request.Query["access_token"];
+//            var path = context.HttpContext.Request.Path;
+//            if (!string.IsNullOrEmpty(accesToken) && path.StartsWithSegments("/Hubs"))
+//            {
+//                context.Token = accesToken;
+//            }
+//            return Task.CompletedTask;
+//        }
+//    };
+//    cfg.TokenValidationParameters = new TokenValidationParameters
+//    {
+//        ValidIssuer = authenticationSettings.JwtIssuer,
+//        ValidAudience = authenticationSettings.JwtIssuer,
+//        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtIssuer)),
+//    };
+//    cfg.SaveToken = true;
+//});
+
 
 /*builder.Services.AddAuthorization(option =>
 {
@@ -106,15 +131,14 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
     app.UseSwagger();
 }
-
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 
 app.UseRouting();
-
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");

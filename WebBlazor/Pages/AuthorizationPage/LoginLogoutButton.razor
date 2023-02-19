@@ -1,10 +1,11 @@
-﻿@inject NavigationManager NavigationManager
-@inject ILocalStorageService LocalStorage
+﻿@using Blazored.SessionStorage;
+@inject NavigationManager NavigationManager
+@inject ISessionStorageService _sessionStorageService
 @inject AuthenticationStateProvider AuthStateProvider
 
 <AuthorizeView>
     <Authorized>
-        <span>Jesteś zalogowany jako @context.User.Identity.Name</span>
+        <span>Jesteś zalogowany jako @context.User.Identity.Name      </span>
 
         <button @onclick"Logout" class="btn btn-danger">Wyloguj</button>
     </Authorized>
@@ -23,7 +24,8 @@
     }
     async Task Logout()
     {
-        await LocalStorage.RemoveItemAsync("token");
+        await _sessionStorageService.RemoveItemAsync("token");
         await AuthStateProvider.GetAuthenticationStateAsync();
     }
 }
+
