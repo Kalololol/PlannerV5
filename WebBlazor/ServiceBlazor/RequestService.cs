@@ -18,25 +18,12 @@ namespace WebBlazor.ServiceBlazor
         {
             return await httpClient.GetFromJsonAsync<RequestModel>($"api/request/getRequestById/{id}");
         }
-/*        public async Task<RequestModel> GetAllRequestsByEmployee(int id)
-        {
-            return await httpClient.GetFromJsonAsync<List<RequestModel>>($"api/request/getAllRequestsByEmployee/{id}");
-
-        }*/
-
         public async Task<RequestModel> AddRequest(RequestModel request)
         {
             try
             {
                 var response = await httpClient.PostAsJsonAsync("api/request/addRequest", request);
-                if (response.IsSuccessStatusCode)
-                {
-                    /*if (response.StatusCode == HttpStatusCode.NoContent)
-                    {
-                        return default(EmployeeModel);
-                    }*/
-                    return request;
-                }
+                if (response.IsSuccessStatusCode) return request;
                 else
                 {
                     var message = await response.Content.ReadAsStringAsync();
@@ -53,14 +40,7 @@ namespace WebBlazor.ServiceBlazor
             try
             {
                 var response = await httpClient.PostAsJsonAsync("api/request/editRequest", request);
-                if (response.IsSuccessStatusCode)
-                {
-                    /*if (response.StatusCode == HttpStatusCode.NoContent)
-                    {
-                        return default(EmployeeModel);
-                    }*/
-                    return request;
-                }
+                if (response.IsSuccessStatusCode) return request;
                 else
                 {
                     var message = await response.Content.ReadAsStringAsync();

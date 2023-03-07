@@ -6,8 +6,8 @@
 @inject IDialogService DialogService
 
 
-<AuthorizeView>
-    <Authorized>
+@*<AuthorizeView>
+    <Authorized>*@
         <h3>DetailsRequest</h3>
 <h3>Prośba @request.DayIndisposition </h3>
 @if (request == null)
@@ -32,11 +32,11 @@ else{
         <MudButton Variant="Variant.Filled" Color="Color.Transparent" OnClick="OnButtonClickedBack">Cofnij</MudButton>
     </table>
 }    
-</Authorized>
+@*</Authorized>
     <NotAuthorized>
         <p>Dostęp tylko dla zalogowanych</p>
     </NotAuthorized>
-</AuthorizeView>
+</AuthorizeView>*@
 
 @code {
     [Parameter]

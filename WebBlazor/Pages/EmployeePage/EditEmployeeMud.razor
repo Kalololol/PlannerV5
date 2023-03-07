@@ -5,8 +5,8 @@
 @inject NavigationManager NavigationManager
 @inject IDialogService DialogService
 
-<AuthorizeView Roles="Manager">
-    <Authorized>
+@*<AuthorizeView Roles="Manager">
+    <Authorized>*@
 <h3>Edycja konta @employee.Surname @employee.Name</h3>
 <MudGrid>
     <MudItem xs="12" sm="7">
@@ -43,11 +43,11 @@
         </MudPaper>
     </MudItem>
 </MudGrid>
-    </Authorized>
+@*    </Authorized>
     <NotAuthorized>
         <p>Nie masz wymaganych uprawnień, dostęp zablokowany.</p>
     </NotAuthorized>
-</AuthorizeView>
+</AuthorizeView>*@
 
 
 @code {

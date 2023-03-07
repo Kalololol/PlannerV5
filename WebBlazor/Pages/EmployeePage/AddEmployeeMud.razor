@@ -6,8 +6,8 @@
 @inject NavigationManager NavigationManager
 @inject IDialogService DialogService
 
-<AuthorizeView Roles="Manager">
-    <Authorized>
+@*<AuthorizeView Roles="Manager">
+    <Authorized>*@
 <h3>Dodawanie nowego pracownika</h3>
 <MudGrid>
     <MudItem xs="12" sm="7">
@@ -51,12 +51,12 @@
         </MudPaper>
     </MudItem>
 </MudGrid>
-    </Authorized>
+@*    </Authorized>
     <NotAuthorized>
         <p>Moduł dostęny tylko dla administratora systemu</p>
     </NotAuthorized>
 </AuthorizeView>
-
+*@
 
 @code {
     EmployeeModel employee = new();

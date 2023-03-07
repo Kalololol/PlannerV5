@@ -2,6 +2,7 @@
 using Application.Service.Queries;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using WebBlazor.ModelWebBlazor;
@@ -27,6 +28,7 @@ namespace WebBlazor.Controller
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IList<RequestModel>>> GetAll()
         {
+
             try
             {
                 List<RequestModel> result = new List<RequestModel>();
@@ -57,6 +59,7 @@ namespace WebBlazor.Controller
 
         public async Task<ActionResult<RequestModel>> GetRequestById(int id)
         {
+
             try
             {
                 var item = await _mediator.Send(new GetRequestByIdQuery(id));

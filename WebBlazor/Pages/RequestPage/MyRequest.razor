@@ -2,20 +2,18 @@
 @attribute [Authorize]
 @inject IRequestService _requestService
 
-
-
 <h3>Moje prośby grafikowe </h3>
-<AuthorizeView>
-    <Authorized>
+@*<AuthorizeView>
+    <Authorized>*@
         <div>
             <h3>Prośby grafikowe - @data.ToShortDateString() </h3>
         </div>
         <table class="table">
             <thead>
                 <tr>
-                    <th><a class="nav-link">Imię i Nazwisko</a></th>
-                    <th><a class="nav-link">Prawo wyk. zawodu</a></th>
-                    <th><a class="nav-link">Telefon</a></th>
+                    <th><a class="nav-link">Data</a></th>
+                    <th><a class="nav-link">Typ prośby</a></th>
+                    <th><a class="nav-link">Zmiana</a></th>
                 </tr>
             </thead>
             <tbody>
@@ -30,33 +28,23 @@
                 }
             </tbody>
         </table>
-
-
-
-    </Authorized>
+@*    </Authorized>
     <NotAuthorized>
         <p>Dostęp tylko dla zalogowanych</p>
     </NotAuthorized>
-</AuthorizeView>
-
-
+</AuthorizeView>*@
 @code {
     List<RequestModel> Elements = new List<RequestModel>();
     bool _filterOpen = false;
     DateTime data = DateTime.Now;
-
 
     protected override async Task OnInitializedAsync()
     {
         var input = await _requestService.GetRequests();
         foreach(var i in input)
         {
-            if(i.EmployeeId == 1)
-            {
-                Elements.Add(i);
-            }
+            if(i.EmployeeId == 1) Elements.Add(i);
         }
-
     }
     void OpenFilter()
     {

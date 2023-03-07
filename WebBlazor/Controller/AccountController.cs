@@ -26,7 +26,8 @@ namespace WebBlazor.Controller
             IMediator mediator,
             IMapper mapper,
             AuthenticationStateProvider authStateProvider,
-            ISessionStorageService sessionStorageService)
+            ISessionStorageService sessionStorageService
+            )
         {
             _accountService = accountService;
             _mediator = mediator;
@@ -40,6 +41,8 @@ namespace WebBlazor.Controller
         {
             try
             {
+                IActionResult response = Unauthorized();
+
                 var search = _mediator.Send(_mapper.Map<GetEmployeeByEmailQuery>(login));
                 EmployeeModel employee = new EmployeeModel()
                 {
@@ -68,12 +71,10 @@ namespace WebBlazor.Controller
                     Id= searchRole.Result.Id,
                     Name = searchRole.Result.Name
                 };
-
                 var token = _accountService.GenerateJwt(employee, role);
+                response = Ok(new { Token = token.ToString() });              
 
-                await _sessionStorageService.SetItemAsync("token", token);
-
-                return Ok(token);
+                return Ok(new { Token = token });
             }
             catch (Exception)
             {

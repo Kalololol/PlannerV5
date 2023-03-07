@@ -37,11 +37,7 @@ builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IRequestService, RequestService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 
-//builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
-
-builder.Services.AddAuthorizationCore();
-//builder.Services.AddBlazoredLocalStorage();
-builder.Services.AddBlazoredSessionStorage();
+//builder.Services.AddAuthorizationCore();
 
 
 var authenticationSettings = new AuthenticationSettings();
@@ -68,46 +64,6 @@ builder.Services.AddAuthentication(option =>
 });
 
 
-// builder.Services.AddAuthentication(option =>
-//{
-//    option.DefaultAuthenticateScheme = "Bearer";
-//    option.DefaultScheme = "Bearer";
-//    option.DefaultChallengeScheme = "Bearer";
-//}).AddJwtBearer(cfg =>
-//{
-//    cfg.RequireHttpsMetadata = false;
-//    cfg.SaveToken = true;
-
-//    cfg.Events = new JwtBearerEvents
-//    {
-//        OnMessageReceived = context =>
-//        {
-//            var accesToken = context.Request.Query["access_token"];
-//            var path = context.HttpContext.Request.Path;
-//            if (!string.IsNullOrEmpty(accesToken) && path.StartsWithSegments("/Hubs"))
-//            {
-//                context.Token = accesToken;
-//            }
-//            return Task.CompletedTask;
-//        }
-//    };
-//    cfg.TokenValidationParameters = new TokenValidationParameters
-//    {
-//        ValidIssuer = authenticationSettings.JwtIssuer,
-//        ValidAudience = authenticationSettings.JwtIssuer,
-//        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtIssuer)),
-//    };
-//    cfg.SaveToken = true;
-//});
-
-
-/*builder.Services.AddAuthorization(option =>
-{
-    option.AddPolicy("HasRole", builder => builder.RequireClaim("RoleId", "2"));
-});*/
-
-
-
 builder.Services.AddHttpClient<IEmployeeService, EmployeeService>
     (client =>
     {
@@ -131,8 +87,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
     app.UseSwagger();
 }
-app.UseAuthentication();
-app.UseAuthorization();
+
 
 app.UseHttpsRedirection();
 
@@ -140,8 +95,16 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+//app.UseAuthentication();
+//app.UseAuthorization();
+
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 app.MapControllers();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 
 app.Run();

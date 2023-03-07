@@ -1,5 +1,6 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
 using WebBlazor.ModelWebBlazor;
@@ -58,7 +59,9 @@ namespace WebBlazor.ServiceBlazor
             var tokenHandler = new JwtSecurityTokenHandler();
             var result = tokenHandler.WriteToken(token);
 
-            return result;
+           httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", result);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿@using Blazored.SessionStorage;
 @inject NavigationManager NavigationManager
-@inject ISessionStorageService _sessionStorageService
 @inject AuthenticationStateProvider AuthStateProvider
 
 <AuthorizeView>
@@ -24,7 +23,6 @@
     }
     async Task Logout()
     {
-        await _sessionStorageService.RemoveItemAsync("token");
         await AuthStateProvider.GetAuthenticationStateAsync();
     }
 }

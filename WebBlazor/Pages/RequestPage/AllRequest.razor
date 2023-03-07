@@ -2,8 +2,8 @@
 @inject IRequestService _requestService
 @attribute [Authorize]
 
-<AuthorizeView>
-    <Authorized>
+@*<AuthorizeView>
+    <Authorized>*@
 <div>
     <h3>Prośby grafikowe - @data.ToShortDateString() </h3>
 </div>
@@ -15,11 +15,11 @@
         <Column T="RequestModel" Field="EmployeeName" Title="Pracownik"/>
     </Columns>
 </MudDataGrid>
-    </Authorized>
+@*    </Authorized>
     <NotAuthorized>
         <p>Dostęp tylko dla zalogowanych</p>
     </NotAuthorized>
-</AuthorizeView>
+</AuthorizeView>*@
 
 @code {
     IEnumerable<RequestModel> Elements = new List<RequestModel>();
@@ -38,3 +38,6 @@
         _filterOpen = true;
     }
 }
+
+
+

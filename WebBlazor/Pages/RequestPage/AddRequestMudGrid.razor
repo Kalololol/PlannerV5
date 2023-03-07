@@ -4,8 +4,8 @@
 @inject IDialogService DialogService
 @inject NavigationManager NavigationManager
 
-<AuthorizeView>
-    <Authorized>
+@*<AuthorizeView>
+    <Authorized>*@
 <h3>Dodaj prośby grafikowe</h3>
    
 <MudDatePicker Label="Dzień niedostępności" @bind-Date="Day"></MudDatePicker>
@@ -24,11 +24,11 @@
 </tbody>
 <MudButton Variant="Variant.Filled" Color="Color.Success" OnClick="OnButtonClicked">Zapisz</MudButton>
 <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="OnButtonClickedBack">Cofnij</MudButton>
-    </Authorized>
+@*    </Authorized>
     <NotAuthorized>
         <p>Dostęp tylko dla zalogowanych.</p>
     </NotAuthorized>
-</AuthorizeView>
+</AuthorizeView>*@
 
 
 @code {
