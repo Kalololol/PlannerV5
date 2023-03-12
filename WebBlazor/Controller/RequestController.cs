@@ -86,8 +86,8 @@ namespace WebBlazor.Controller
             {
                 if (request == null)
                     return BadRequest();
-                var input = ClaimTypes.NameIdentifier;
-                var employeeId = int.Parse(ClaimTypes.NameIdentifier);
+                // var input = ClaimTypes.NameIdentifier;
+                var employeeId = 1;//int.Parse(ClaimTypes.NameIdentifier); // 
                 request.EmployeeId = employeeId;
                 await _mediator.Send(_mapper.Map<CreateRequestCommand>(request));
 
